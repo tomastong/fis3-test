@@ -1,0 +1,29 @@
+航空母舰计划：今天呢，我们来总结一下使用的、未使用的新技术的使用方法
+
+arttemplate
+    这个用法比较简单，我们简要分析一下即可
+    1、页面引用template的js库文件
+    2、页面中直接写入模板，进行js置换
+
+tmodjs
+    tmodjs需要配置文件，package.json
+    1、使用npm指令全局安装tmodjs
+    2、tmodjs的项目配置文件保存在模板目录下的 package.json 文件中
+        如：  tpl->comment.tpl、gift.tpl、login.tpl、package.json
+        配置项如下：https://code.csdn.net/Tencent/tmodjs/tree/master#%E6%BC%94%E7%A4%BA
+        主要是将生成的temp的js文件，输出到引用js的目录中
+    3、ps:模板文件名字和js模板置换的参数名字一样
+
+gulp
+    gulp是一个自动构建工具
+    1、使用npm指令全局安装gulp，项目内部同样需要安装gulp、插件
+    2、主要将tmodjs作为插件在gulp使用
+    3、gulp的配置文件gulpfile.js
+    4、ps:注意mac电脑上文件的后缀问题
+
+fis3
+    fis3是一个前端构建工具
+    1、起到的是一个平台载体的作用，一切开发装备以fis3为基准
+    2、使用npm指令全局安装fis3
+    3、在项目的跟目录下，fis3的配置文件fis-conf.js，参考自己github上面的Demo
+    3、实现构建目录，md5戳、压缩合并代码等
