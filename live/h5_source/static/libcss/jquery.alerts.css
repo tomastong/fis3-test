@@ -1,0 +1,26 @@
+#popup_container {
+	BORDER: #ccc 1px solid; MIN-WIDTH: 6rem; font-size: 0.4rem; BACKGROUND: #fff; MAX-WIDTH: 600px;COLOR: #000;FONT-FAMILY: Arial, sans-serif; -moz-border-radius: 6px; -webkit-border-radius: 6px; border-radius: 6px
+}
+#popup_title {
+	margin-top: 1em;
+	border-bottom: #ccc 1px solid;
+}
+#popup_content {
+	PADDING-BOTTOM: 1em; MARGIN: 0em; PADDING-TOP: 1em
+}
+
+#popup_message {
+	text-align: center;
+}
+#popup_panel {
+	MARGIN: 1em 0em 0em 0em; TEXT-ALIGN: center
+}
+#popup_prompt {
+	MARGIN: 0.5em 0em
+}
+.confirm #popup_ok{
+	margin-right: 0.6rem;
+}
+#popup_ok,#popup_cancel{
+	    color: #2c81e1;
+}

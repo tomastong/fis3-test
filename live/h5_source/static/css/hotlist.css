@@ -1,0 +1,327 @@
+body{
+    background-color: #fff;
+    font-size: 0.373333rem !important;
+    font-family: "Helvetica Neue", Helvetica, STHeiTi;
+}
+.hotlist-wrap .list li a{text-decoration: none !important;}
+.hotlist-wrap .list li a:link{text-decoration: none !important;}
+.hotlist-wrap .list li a:visited{text-decoration: none !important;}
+.hotlist-wrap .list li a:hover{text-decoration: none !important;}
+.hotlist-wrap .list li a:active{text-decoration: none !important;}
+.hotlist{
+    position: relative;
+    margin: 0 auto;
+    width: 10.0rem;
+}
+.hotlist .hotlist-wrap{
+    width: 100%;
+}
+.hotlist .hotlist-wrap .list{
+
+}
+.hotlist .hotlist-wrap .list li{
+    float: left;
+    width: 50%;
+    border: 2px solid #e9e9e9;
+    box-sizing: border-box;
+}
+.hotlist .hotlist-wrap .list li:first-child,
+.hotlist .hotlist-wrap .list li:nth-child(2){
+    border-top:0;
+}
+.hotlist .hotlist-wrap .list li .item{
+    position: relative;
+}
+.hotlist .hotlist-wrap .list li .item figure{
+    position: relative;
+    /*width: 4.986667rem;*/
+    height: 4.986667rem;
+}
+.hotlist .hotlist-wrap .list li .item figure .status .icon{
+    display: inline-block;
+    margin-right: 0.133333rem;
+    width: 0.133333rem;
+    height: 0.133333rem;
+    vertical-align: middle;
+    background: url(../img/h5_room/dot.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}
+.hotlist .hotlist-wrap .list li .item figure .loc .loc-icon{
+    display: inline-block;
+    margin-right: 0.133333rem;
+    width: 0.333333rem;
+    height: 0.4rem;
+    vertical-align: middle;
+    background: url(../img/h5_room/loc.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}
+.hotlist .hotlist-wrap .list li .item .status,
+.hotlist .hotlist-wrap .list li .item .loc{
+    position: absolute;
+    color: #fff;
+}
+.hotlist .hotlist-wrap .list li .item .status{
+    top: 0.16rem;
+    right: 0.16rem;
+    padding: 0 0.24rem;
+    height: 0.533333rem;
+    border-radius: 0.266667rem;
+    border:0.04rem solid #fff;
+    text-align: center;
+    line-height: 0.533333rem;
+    background-color: rgba(51,51,51,0.3);
+}
+.hotlist .hotlist-wrap .list li .item .loc{
+    bottom: 0.266667rem;
+    right: 0.306667rem;
+    min-width: 1.2rem;
+    width: auto !important;
+    height: 0.506667rem;
+    font-weight: 600;
+}
+.hotlist .hotlist-wrap .list li .item figure img{
+    width: 100%;
+    height: 100%;
+}
+.hotlist .hotlist-wrap .list li .item .intro{
+    height: 1.666667rem;
+}
+.hotlist .hotlist-wrap .list li .item .intro .name .rank{
+    display: inline-block;
+    margin-left: 0.133333rem;
+    width: 0.4rem;
+    height: 0.4rem;
+    vertical-align: sub;
+}
+.star{
+    background: url(../img/h5_room/redv.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}
+.doyen{
+    background: url(../img/h5_room/yellowv.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}
+.hotlist .hotlist-wrap .list li .item .intro .name{
+    float: left;
+    margin-left: 0.213333rem;
+    color: #181615;
+    line-height: 0.833335rem;
+    vertical-align: middle;
+}
+.hotlist .hotlist-wrap .list li .item .intro .name{
+    max-width: 3rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.hotlist .hotlist-wrap .list li .item .intro .count{
+    float: right;
+    margin-right: 0.213333rem;
+    color: #181615;
+    line-height: 0.833335rem;
+}
+.hotlist .hotlist-wrap .list li .item .intro .sign{
+    clear:both;
+    margin:0  0.213333rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: #868686;
+}
+.footer{
+    display: none;
+    position: fixed;
+    margin: 0 auto;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 10rem;
+    height: 1.626667rem;
+    background-color: rgb( 26, 26, 31 );
+    opacity: 0.9;
+}
+.hotlist  .footer .footer-wrap{
+    margin: 0.266667rem 0.266667rem 0.266667rem 0.266667rem;
+    font-size: 0;
+}
+.hotlist  .footer .footer-wrap figure{
+    display: inline-block;
+    width: 1.066667rem;
+    height: 1.066667rem;
+    vertical-align: middle;
+}
+.hotlist  .footer .footer-wrap figure img{
+    width: 100%;
+    height: 100%;
+}
+.hotlist  .footer .footer-wrap .title{
+    display: inline-block;
+    margin-left: 0.266667rem;
+    height: 1.12rem;
+    color: #fff;
+    font-size: 0.426667rem;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 0.48rem;
+    line-height: 1.12rem;
+}
+.hotlist  .footer .footer-wrap .title span{
+    color: #f9743a;
+}
+.footer{
+    z-index: 100;
+}
+.hotlist .assist{
+    height: 1.68rem;
+}
+
+.clearfix2:after{
+    content:"";
+    visibility:hidden;
+    display:block;
+    height:0;
+    clear:both;
+}
+.clearfix2{*zoom:1;}
+
+
+/*播放器锁屏层///////////////////////////////////////////////*/
+
+.player-lock {
+    position: fixed;
+    margin: 0 auto;
+    top: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 10.0rem;
+    height: 100%;
+    z-index: 88;
+}
+
+.player-lock .lock-ctn {
+    position: relative;
+    left: 50%;
+    top: 50%;
+    margin-left: -3.9533335rem;
+    margin-top: -3.133334rem;
+    width: 7.906667rem;
+    height: 6.266667rem;
+    border-radius: 0.32rem;
+    background-color: #fff;
+    z-index: 90;
+    overflow: hidden;
+}
+.playelr-lock .lock-ctn a{
+    position: relative;
+    display: block;
+    z-index: 1000;
+}
+.player-lock .lock-ctn .f-close {
+    position: absolute;
+    right: 0.32rem;
+    top: 0.373333rem;
+    width: 0.4rem;
+    height: 0.413333rem;
+    background: url(../img/h5_room/close.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}
+
+.player-lock .lock-ctn figure {
+    margin: 1.04rem auto auto 1.493333rem;
+    width: 4.893333rem;
+    height: 2.306667rem;
+}
+
+.player-lock .lock-ctn figure img {
+    width: 100%;
+    height: 100%;
+}
+
+.player-lock .lock-ctn p {
+    margin-top: 0.333333rem;
+    font-size: 0.373333rem;
+    color: #ff6826;
+    text-align: center;
+}
+
+.player-lock .lock-ctn .down-open {
+    margin: 0.586667rem 0.493333rem auto;
+    width: 6.933333rem;
+    height: 1.253333rem;
+    text-align: center;
+    font-size: 0.426667rem;
+    line-height: 1.253333rem;
+    color: #fff;
+    border-radius: 0.213333rem;
+    background-color: #ff6826;
+}
+/*///补充首页//////////////////////////////////////*/
+.hotlist-index{
+    position: relative;
+}
+.hotlist-index,
+.hotlist-index .index-bg,
+.hotlist-index .index-bg img{
+    width: 100%;
+    height: auto;
+}
+.hotlist-index .logo img,
+.hotlist-index .download img,
+.hotlist-index .recharge img,
+.hotlist-index .arrow img{
+    width: 100%;
+    height: 100%;
+}
+.hotlist-index .logo {
+    position: absolute;
+    top: 3.173333rem;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 4.0rem;
+    height: 1.453333rem;
+    text-align: center;
+}
+.hotlist-index .recharge {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    bottom: 2.866667rem;
+    width: 5.066667rem;
+    height: 1.453333rem;
+    text-align: center;
+}
+.hotlist-index .download {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    bottom: 1.16rem;
+    width: 5.066667rem;
+    height: 1.453333rem;
+    text-align: center;
+}
+.hotlist-index .arrow {
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    bottom: 0.4rem;
+    width: 0.96rem;
+    height: 0.48rem;
+    text-align: center;
+}
+/*补充/////////////////////*/
+.cut-off{
+    height: 0.133333rem;
+    background-color: #f0f0f0;
+}
+.hotlist  .footer .footer-wrap .title .arrow{
+    display: inline-block;
+    margin-bottom: 0.05rem;
+    width: 0.213333rem;
+    height: 0.413333rem;
+    vertical-align: middle;
+    background: url(../img/h5_room/f-arrow.png?__inline) no-repeat;
+    background-size: 100% 100%;
+}

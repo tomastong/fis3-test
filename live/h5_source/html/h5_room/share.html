@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title><{$title}></title>
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="../static/libcss/mui.min.css">
+    <link rel="stylesheet" href="../static/libcss/jquery.alerts.css">
+    <link rel="stylesheet" href="../static/css/touch.css">
+    <script src="../static/libjs/sewise.player.min.js"></script>
+    <script src="../static/libjs/jquery-2.1.1.min.js"></script>
+    <script src="../static/libjs/flexible.0.3.4.js"></script>
+    <script src="../static/libjs/socket.io.js"></script>
+    <script src="../static/libjs/mui.min.js"></script>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+</head>
+<body style="margin:0 auto;">
+    <div class="shadow">
+        <img src="./../static/img/h5_room/shadow.png" class="shadow" style="position:absolute;width:100%;display:none;margin:0 auto;z-index: 999;">
+    </div>
+    <div id="rt-share">
+        <img src="./../static/img/h5_room/rt-share.png" style="width:100%;">
+    </div>
+        <{if $liveinfo.status==1}>
+        <section class="live-end">
+          <div class="live-end-bg">
+              <img src="<{$liveinfo.covers.b}>" alt="">
+          </div>
+          <div class="live-end-mask"></div>
+          <div class="live-end-ctn">
+              <figure><img src="<{$liveinfo.avatar}>" alt=""></figure>
+              <{if $liveinfo.ytypevt==1}>
+              <span class="c-level pos2"></span>
+              <{elseif $liveinfo.ytypevt==2}>
+              <span class="h-level pos2"></span>
+              <{else}>
+              <{/if}>
+              <div class="ps-end">直播已结束</div>
+              <hr>
+              <div class="ps-cnt">
+                  <span class="nums"><{$liveinfo.views}></span>人看过
+              </div>
+              <div class="playback">
+                <img src="../static/img/h5_room/playback.png">
+              </div>
+          </div>
+        </section> 
+        <{elseif $liveinfo.status==10 || $liveinfo.status==11}>
+      
+        <figure id="video-box" class="vod-box-pl">
+            <video x5-video-player-type="h5" x5-video-player-fullscreen="true" style="background:rgb(0,0,0)"  id="video" loop="loop" width="100%"  preload="auto" poster=""  webkit-playsinline="true" playsinline="true" x-webkit-airplay="true" src="<{$liveinfo.m3u8url}>"></video>
+            <div class="videobg" style="position:absolute;width:100%;height:100%;top:0;background-image: url('<{$liveinfo.covers.b}>');background-position: center center;background-size: cover; background-color:transparent;"
+            ></div>
+            <!-- 顶部信息层 -->
+            <section class="top-attend-layer">
+                <div class="user-info">
+                      <figure class="avatar">
+                        <img src="<{$liveinfo.avatar}>" alt="<{$liveinfo.nickname}>">
+                            <{if $liveinfo.ytypevt==1}>
+                                    <span class="rank doyen"></span> 
+                            <{/if}>
+                      </figure>
+                      <dl class="item">
+                          <dt><{$liveinfo.nickname}></dt>
+                          <dd>
+                              <{if $liveinfo.status==11}>
+                                  <{if $liveinfo.views>9999}>
+                                      <{number_format($liveinfo.views/10000,1)}>万观看
+                                  <{else}>
+                                      <{$liveinfo.views}>观看
+                                  <{/if}>
+                              <{else}>
+                                  <{if $liveinfo.type==0 && $liveinfo.status==10}>
+                                      <{if $liveinfo.curviews>9999}>
+                                        <{number_format($liveinfo.curviews/10000,1)}>万人
+                                      <{else}>
+                                        <{$liveinfo.curviews}>人
+                                      <{/if}>
+                                  <{else}>
+                                      <{$liveinfo.views}>人
+                              <{/if}>
+                            <{/if}>
+                          </dd>
+                      </dl>
+                      <div class="subs enter_room">关注</div>
+                </div>
+                <!-- 头像列表 onclick="lanchLiveInfo(<{$lanch_type}>,'<{$liveinfo.scid}>');"-->
+                <div class="avatar-ls-wrap">
+                    <ul class="avatar-ls">
+                        <{foreach item=value key=k from=$live_members}>
+                        <li>
+                            <a href="javascript:void(0);"><img src="<{$value.avatar}>" alt="">
+                                <{if $k < 3}>
+                                <div class="list">
+                                    <img src="http://test1.static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
+                                </div>
+                                <{else}>
+                                <div class="list">
+                                    <img src="http://test1.static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
+                                </div>
+                                <{/if}>
+                            </a>
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                </div>
+            </section>
+            <!--金币-->
+            <section class="gold-coin" style="display:none">
+                <div class="gold-coin-ctn">
+                    <span>金币：</span><span class="goldcoins"></span><!-- <span class="arrow"></span> -->
+                </div>
+            </section>
+            <section class="yizhibo-logo">
+                <div class="yizhibo-logo-ctn">
+                    <span>一直播 ID：</span><span><{$liveinfo.memberid}></span>
+                </div>
+            </section>
+            <div class="live-starttime"><{$liveinfo.starttime|date_format:" %Y.%m.%d"}></div>
+            <!-- 评论列表 -->
+            <section class="content-box">
+                <div class="room-chat-scroller" id="message">
+                    <ul class="room-chat-messages" id="list-info"></ul>
+                </div>
+            </section>
+            <!--送出礼品，两个线程进行操作-->
+            <section class="left-side-cartoon">
+                <div class="effect hide">
+                    <div class="wrap-cartoon">
+                        <figure class="cartoon-avatar">
+                            <img src="" alt="">
+                        </figure>
+                        <p class="nickname"><span class="rank"></span></p>
+                        <p class="desc"></p>
+                        <figure class="gift">
+                            <img src="" alt="">
+                        </figure>
+                        <h4 class="count">×&nbsp;1</h4>
+                    </div>
+                </div>
+                <div class="effect hide">
+                    <div class="wrap-cartoon">
+                        <figure class="cartoon-avatar">
+                            <img src="" alt="">
+                        </figure>
+                        <p class="nickname"><span class="rank"></span></p>
+                        <p class="desc"></p>
+                        <figure class="gift">
+                            <img src="" alt="">
+                        </figure>
+                        <h4 class="count">×&nbsp;1</h4>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 底部功能区 end-->
+            <section class="btm-menu">
+                <div class="wrap-menu">
+                <{if $liveinfo.status==10}>
+                    <div class="w-input ">
+                        <input class="input" id="content" type="text" placeholder="说点什么吧...">
+                    </div>
+                <{elseif $liveinfo.status==11}>
+                    <div class="input-block">
+                    </div>
+                <{else}>
+                <{/if}>
+                    <figure></figure>
+                    <span class="send-msg">发送</span>
+                    <div class="w-share">
+                        <figure><img src="../static/img/h5_room/share.png" alt=""></figure>
+                    </div>
+                    <div class="w-gift">
+                        <figure><img src="../static/img/h5_room/gift.png" alt=""></figure>
+                    </div>
+                </div>
+            </section>
+            <!-- 分享qq、微信、朋友圈 -->
+            <section class="sns-share" style="display:none">
+                <div class="sns-ctn">
+                    <div class="weibo sns">
+                        <figure><img src="../static/img/h5_room/weibo.png" alt="微博"></figure>
+                        <p>微博</p>
+                    </div>
+                    <div class="weixin sns">
+                        <figure><img src="../static/img/h5_room/weixin.png" alt="微信"></figure>
+                        <p>微信</p>
+                    </div>
+                    <div class="friend-circle sns">
+                        <figure><img src="../static/img/h5_room/friend-circle.png" alt="朋友圈"></figure>
+                        <p>朋友圈</p>
+                    </div>
+                    <div class="qq sns">
+                        <figure><img src="../static/img/h5_room/QQ.png" alt="QQ"></figure>
+                        <p>QQ</p>
+                    </div>
+                </div>
+                <h4>取消</h4>
+            </section>
+            <div class="mui-slider gift-slider" style="display:none">
+                <div class="mui-slider-group">
+                    <div class="mui-slider-item"></div>
+                </div>
+                <div class="mui-slider-indicator pagination">
+                    <div class="mui-indicator mui-active"></div>
+                </div>
+                <div class="recharge">
+                    <span>充值&nbsp;&nbsp;</span>
+                </div>
+                <button class="btn send disabled">发送</button>
+                <div class="big-bg" style="display:none">
+                    <div class="lx-click">
+                        <div class="lx-send"><i>连击</i>
+                            <p><i>30</i></p>
+                        </div>
+                    </div>
+                    <div class="send66 num">66</div>
+                    <div class="send520 num">520</div>
+                    <div class="send888 num">888</div>
+                    <div class="send1314 num">1314</div>
+                </div>
+            </div>
+            <div class="pause">
+                <div class="pause-wrap">
+                    <figure>
+                        <img src="../static/img/h5_room/pause.png" alt="">
+                    </figure>
+                </div>
+            </div>
+            <section class="user_live_room">
+                <figure class="user_avatar">
+                    <img src="<{$liveinfo.avatar}>">
+                    <{if $liveinfo.ytypevt==1}>
+                        <span class="rank doyen"></span> 
+                    <{else}>
+                    <{/if}>
+                </figure>
+                <dl class="user_desc">
+                    <dt><{if $liveinfo.nickname==''}>&nbsp;<{else}><{$liveinfo.nickname}><{/if}></dt>
+                    <dd>邀请你来我的直播间</dd>
+                </dl>
+            <div class="enter_live_room enter_room">进入直播间</div>
+            </section>
+        </figure>
+        <{else}>
+        <{/if}>    
+        <!-- 视频列表 -->
+        <figure class="cut-off"></figure>
+         <{if $total> 0}>
+        <div class="more clearfix"><div class="fll">更多精彩内容</div><div class="frr"><a href="/www/live/hotlist">更多直播<span></span></a></div></div>
+        <figure class="cut-off"></figure>
+        <ul class="more-list-box clearfix">
+            <{foreach item=rs from=$list}>
+                 <li>
+                    <a href="<{factory::load_config('domain','wap_yizhibo_domain')}>/l/<{$rs.scid}>.html">
+                        <div class="item">
+                            <figure>
+                                <img src="<{$rs.covers.s}>" alt="">
+                                <div class="status">
+                                    <{if $rs.status==10}>
+                                    <span class="icon"></span>直播中
+                                    <{else}>
+                                    <span></span>回放
+                                    <{/if}>
+                                </div>
+                                <div class="loc">
+                                    <{if $rs.address!=''}>
+                                    <span class="loc-icon"></span><{$rs.address}>
+                                    <{else}>
+                                    <span></span>
+                                    <{/if}>
+                                </div>
+                            </figure>
+                            <div class="intro">
+                                <p class="name">
+                                <{$rs.nickname}>
+                                    <{if $rs.ytypevt==1}>   
+                                        <!-- <{if $rs.ytypename=="明星"}> -->
+                                            <!-- <span class="rank star"></span> -->
+                                        <!-- <{else}> -->
+                                            <span class="rank doyen"></span>
+                                        <!-- <{/if}> -->
+                                    <{else}>
+                                    <{/if}>
+                                </p>
+                                <p class="count">
+                                <{if $rs.status==11}>
+                                    <{if $rs.views>9999}>
+                                        <{number_format($rs.views/10000,1)}>万看过
+                                    <{else}>
+                                        <{$rs.views}>看过
+                                    <{/if}>
+                                <{else}>
+                                    <{if $rs.type==0 && $rs.status==10}>
+                                        <{if $rs.online>9999}>
+                                            <{number_format($rs.online/10000,1)}>万人
+                                        <{else}>
+                                            <{$rs.online}>人
+                                        <{/if}>
+                                    <{else}>
+                                        <{$rs.views}>人
+                                    <{/if}>
+                                <{/if}>
+                                </p>
+                                <p class="sign"><{$rs.title}></p>
+                            </div>
+                        </div>
+                    </a> 
+                </li>
+            <{/foreach}>
+        </ul>
+        <{/if}> 
+        <div class="assist"></div>
+        <div class="footer btnOpenApp">
+            <div class="footer-wrap">
+                <figure>
+                    <img src="../static/img/h5_room/yi.png" >
+                </figure>
+                
+                <div class="title">
+                    打开<span>一直播APP</span>，观看更多有趣直播&nbsp;&nbsp;<span class="arrow"></span>
+                </div>
+            </div>
+        </div>
+        <!--直播间红包-->
+        <div class="player-lock" style="display:none"></div>
+        <div class="lucky-money" style="display:none">
+            <div class="close"></div>
+            <figure><img src="../static/img/h5_room/lucky-money.png" alt=""></figure>
+            <p>打开一直播客户端<br/>有可能抢到主播间红包哦</p> 
+            <div class="openapp enter_room">去看看</div><div class="openapp-bg"></div>
+        </div>
+
+        <div class="guide-pay" style="display:none">
+            <figure>
+                <img src="../static/img/h5_room/guide.png">
+                <div class="close"></div>
+            </figure>
+        </div>
+        <div class="login">
+            <div class="login-wrap">
+                <p>登录后才能操作哦</p> 
+                <div class="btn ok">去登录</div>
+                <div class="btn cancel">取消</div>
+                <div class="login-close"></div>
+            </div>
+        </div>
+<script>
+<{$SignPackage}>
+    var shareConfig = {
+        wx:{
+            title : '<{$seotitle}>',
+            desc : '<{$seodescription}>',
+            imgUrl : '<{$liveinfo.covers.s}>',
+            link : "<{factory::load_config('domain','wap_yizhibo_domain')}>/l/<{$liveinfo.scid}>.html"
+        },
+        sObj:{
+            "scid":"<{$liveinfo.scid}>",
+            "status":"<{$liveinfo.status}>",
+            "memberid":"<{$liveinfo.memberid}>",
+            "unq_member_key":"<{$unq_member_key}>"
+        },
+        url:{
+            "send_live_comment":"/www/live/send_live_comment",
+            "buy_gift_h5":"/gift/h5api/buy_gift_h5",
+            "get_my_wallet":"/member/h5api/get_my_wallet",
+            "get_gift_list_h5":"/gift/h5api/get_gift_list_h5",
+            "has_follow":"/www/live/has_follow",
+            "follow_friends":"/www/live/follow_friends"
+        }
+    }, user = {};
+</script>
+<script src="../static/js/main.js"></script>
+<script src="../static/js/config.js"></script>
+<script src="../static/js/share.tpl.js"></script>
+<script src="../static/js/temp.js"></script>
+<script src="../static/js/gift.js"></script>
+<script src="../static/js/chat.js"></script>
+<script src="../static/js/init.js"></script>
+<script src="https://a.yzbo.tv/scripts/dist/mlink.min.js"></script>
+</body>
+</html>

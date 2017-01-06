@@ -12,12 +12,12 @@ var gulp = require('gulp'),
             .pipe(gulp.dest('static/css/live'));
     });
     // gulp.watch('**/src/temp/**/**.html', function (event) {
-        // if(event&&event.path){
-        //     console.log(path + ' was ' + event.type + ', continue...');
-        // }
-        // else{
-        //     console.log("less has reset;watch....");   
-        // }
+    //     if(event&&event.path){
+    //         console.log(path + ' was ' + event.type + ', continue...');
+    //     }
+    //     else{
+    //         console.log("less has reset;watch....");   
+    //     }
     //     gulp.src('**/src/temp/**/**.html')
     //     .pipe(tmodjs({
     //         "charset": "utf-8",    
@@ -28,7 +28,7 @@ var gulp = require('gulp'),
     //         "combo": true,
     //         "cache": false,
     //         templateBase:'./h5_source/src/temp/',   
-                    //  这个是模板目录tmodjs执行目标，也就是package.json所在位置
+    //                  这个是模板目录tmodjs执行目标，也就是package.json所在位置
     //         runtime:"temp.js" // 固定写法
     //     }))
     //     .pipe(gulp.dest('./h5_source/static/js/'));   输出目录，以gulpfile.js为参考

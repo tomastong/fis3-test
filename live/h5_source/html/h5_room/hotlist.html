@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title>一直播</title>
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <link rel="Shortcut Icon" href="favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/libcss/reset.css">
+    <link rel="stylesheet" href="../static/css/hotlist.css">
+    <script src="../static/libjs/jquery-2.1.1.min.js"></script>
+    <script src="../static/libjs/template.js"></script>
+    <script src="../static/libjs/flexible.0.3.4.js"></script>
+    <script src="https://a.yzbo.tv/scripts/dist/mlink.min.js"></script>
+</head>
+
+<body>
+    <section class="hotlist">
+        <div class="hotlist-index">
+            <figure class="index-bg">
+                <img src="../static/img/h5_room/index-bg.png">
+            </figure>
+            <figure class="logo">
+                <img src="../static/img/h5_room/yzb-logo.png">
+            </figure>
+            <figure class="recharge">
+                <img src="../static/img/h5_room/recharge.png">
+            </figure>
+            <figure class="download btnOpenApp">
+                <img src="../static/img/h5_room/download.png">
+            </figure>
+            <figure class="arrow"><img src="../static/img/h5_room/arrow.png"></figure>
+        </div>
+        <figure class="cut-off"></figure>
+        <div class="hotlist-wrap">
+            <ul class="list clearfix2"></ul>
+        </div>
+        <div class="assist"></div>
+        <div class="footer btnOpenApp">
+            <div class="footer-wrap">
+                <figure>
+                    <img src="../static/img/h5_room/yi.png" alt="">
+                </figure>
+                
+                <div class="title">
+                    打开<span>一直播APP</span>，观看更多有趣直播&nbsp;&nbsp;<span class="arrow"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script id="list" type="text/html">
+        {{each data as value i}}
+         <li>
+            <a href="{{value.liveurl}}">
+                <div class="item">
+                    <figure>
+                        <img src="{{value.cover}}" alt="">
+                        <div class="status">
+                            <span class="{{value.status == 10 ? 'icon' : ''}}"></span>
+                            {{value.status == 10 ? '直播中' : '回放'}}
+                        </div>
+                        <div class="loc">
+                            <span class="{{value.address != '' ? 'loc-icon':''}}"></span>{{value.address}}
+                        </div>
+                    </figure>
+                    <div class="intro">
+                        <p class="name">{{value.nickname.length>5?value.nickname.substr(0,5)+'...':value.nickname}}<span class="rank {{value.ytypevt == 1 ? 'doyen':''}}"></span></p>
+                        <p class="count">{{value.status == 10 ? (value.online > 10000 ? (value.online/10000).toFixed(1)+'万人' : value.online+'人'):(value.views > 10000 ? (value.views/10000).toFixed(1)+'万人' : value.views+'人')}}</p>
+                        <p class="sign">{{value.title}}</p>
+                    </div>
+                </div>
+            </a>
+        </li>
+        {{/each}}
+    </script>
+    <script>
+        var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+        var sUserAgent = navigator.userAgent.toLowerCase();
+        var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger";
+        var qq = navigator.userAgent.match(/QQ\//i) == "QQ/";
+        var weibo = sUserAgent.match(/WeiBo/i) == "weibo";
+
+        $(function(){
+            new Mlink({
+                mlink : "https://a.yzbo.tv/AAah",
+                button : document.querySelectorAll(".btnOpenApp")
+            });
+
+            var opt = {
+                requestData:function(){
+                    if($("ul li").length < 200){
+                        var page = $("ul li").length / 20 + 1;
+                        $.ajax({
+                            url:"/www/live/get_hot_list",
+                            type:"post",
+                            async:false,
+                            data:{"page":page,"limit":"20"},
+                            dataType:"json",
+                            success:function(data){
+                                opt.scrollLoading(data.data.list);
+                            },
+                            error:function(data){
+                                console.log("net error.");
+                            }
+                        })
+                    }else{
+                        return;
+                    }
+                },
+                scrollLoading:function(arr){
+                    $(".list").append(template("list",{'data' : arr}));
+                },
+                recharge:function(){
+                    $(".recharge").on(clickOrTouch,function(){
+                        var domain = location.hostname;
+                        var child = domain.substr(0,domain.indexOf("."));
+                        child += ".";
+                        if(child != "dev."&&child != "test."){child = "";}
+                            window.location.href = 'https://'+child+'pay.yizhibo.com/product/api/get_product_list_h5';
+                    })
+                },
+                init:function(){
+                    if(qq || weixin || weibo){
+                        $(".hotlist-index .index-bg img").attr("src",'../static/img/h5_room/index-bg-2.png');
+                        $(".hotlist-index .logo").css("top","1.47rem");
+                        $(".hotlist-index .download").css("top","13.373rem");
+                    }
+                    opt.recharge();
+                    opt.requestData();
+                }
+            }
+
+            opt.init();
+
+            $(window).scroll(function () {
+                if ($(document).scrollTop()+$(window).height()
+                       >=$(document).height()-200) {
+                    opt.requestData();
+                }
+                $(document).scrollTop()>$(window).height()?$(".footer").show():$(".footer").hide();
+            });
+        });
+
+
+   </script>
+</body>
+
+</html>
