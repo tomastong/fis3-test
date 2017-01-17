@@ -7,7 +7,7 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
       deploy: fis.plugin('local-deliver', {
         to:'./../../live_h5'
       }),
-      domain: "http://test1.static.yizhibo.com/html/live_h5"
+      domain: "//test1.static.yizhibo.com/html/live_h5"
   })
   .match('::package', {
     postpackager: fis.plugin('loader', {
@@ -21,6 +21,9 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
       useHash:false
   })
   .match("static/img/**",{
+      useHash:true
+  })
+  .match("static/img/rank/{*-*,f*}.png",{
       useHash:false
   })
   .match('::package', {
@@ -47,7 +50,7 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
       deploy: fis.plugin('local-deliver', {
         to:'./../../live_h5'
       }),
-      domain: "http://test1.static.yizhibo.com/html/live_h5"
+      domain: "//test1.static.yizhibo.com/html/live_h5"
   })
   .match('static/**.{css,js,png}', {
       useHash: true
@@ -82,7 +85,7 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
       deploy: fis.plugin('local-deliver', {
         to:'./../../live_h5'
       }),
-      domain: "http://static.yizhibo.com/html/live_h5"
+      domain: "//static.yizhibo.com/html/live_h5"
   })
   .match('::package', {
     postpackager: fis.plugin('loader', {
@@ -96,6 +99,9 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
       useHash:false
   })
   .match("static/img/**",{
+      useHash:true
+  })
+  .match("static/img/rank/{*-*,f*}.png",{
       useHash:false
   })
   .match('::package', {

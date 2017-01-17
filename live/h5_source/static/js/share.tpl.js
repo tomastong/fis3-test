@@ -357,13 +357,16 @@ var page_elem = {
             if (!move) {
                 var x = document.getElementById("video");
                 if (x.paused) {
-                    x.play();
-                    $(".videobg").remove();
-                    x.style.background = "#000";
-                    $(".pause").hide();
+                    // x.oncanplay = function(){
+                        $(".videobg").hide();
+                        x.style.background = "#000";
+                        $(".pause").hide();
+                        x.play();
+                    // }
                 } else {
                     if(!$(".btm-menu").is(":hidden")){
                         x.pause();
+                        $(".videobg").show();
                         $(".pause").show();
                     }
                 }
@@ -384,7 +387,7 @@ var page_elem = {
         });
         $("#video").on("touchmove", function() {
             move = true;
-            console.log("moving");
+            // console.log("moving");
         })
     },
     // concern: function() {
@@ -530,9 +533,11 @@ var page_elem = {
             $('#video-box').css("height", $(window).height());
         }
         if(ios && (qq || weixin)){
-            $(".videobg").remove();
+            // $("#video").get(0).oncanplay = function(){
+            $(".videobg").hide();
             $(".pause").hide();
             $("#video").get(0).play();
+            // }
             document.addEventListener("WeixinJSBridgeReady", function () { 
                 $("#video")[0].play(); 
             }, false);

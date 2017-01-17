@@ -115,7 +115,7 @@ $(function(){
   // }); 
   $(window).on("resize",function(){
       setPage($vod,$vl,$('video'));
-      if(bIsAndroid && winHeight - $(window).height() < 10){
+      if(android && winHeight - $(window).height() < 10){
           $(".input").blur();
       }
   }); 

@@ -16,7 +16,7 @@
     <script src="../static/libjs/flexible.0.3.4.js"></script>
     <script src="../static/libjs/socket.io.js"></script>
     <script src="../static/libjs/mui.min.js"></script>
-    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 </head>
 <body style="margin:0 auto;">
     <div class="shadow">
@@ -55,7 +55,6 @@
             <video x5-video-player-type="h5" x5-video-player-fullscreen="true" style="background:rgb(0,0,0)"  id="video" loop="loop" width="100%"  preload="auto" poster=""  webkit-playsinline="true" playsinline="true" x-webkit-airplay="true" src="<{$liveinfo.m3u8url}>"></video>
             <div class="videobg" style="position:absolute;width:100%;height:100%;top:0;background-image: url('<{$liveinfo.covers.b}>');background-position: center center;background-size: cover; background-color:transparent;"
             ></div>
-            <!-- 顶部信息层 -->
             <section class="top-attend-layer">
                 <div class="user-info">
                       <figure class="avatar">
@@ -88,7 +87,6 @@
                       </dl>
                       <div class="subs enter_room">关注</div>
                 </div>
-                <!-- 头像列表 onclick="lanchLiveInfo(<{$lanch_type}>,'<{$liveinfo.scid}>');"-->
                 <div class="avatar-ls-wrap">
                     <ul class="avatar-ls">
                         <{foreach item=value key=k from=$live_members}>
@@ -96,11 +94,11 @@
                             <a href="javascript:void(0);"><img src="<{$value.avatar}>" alt="">
                                 <{if $k < 3}>
                                 <div class="list">
-                                    <img src="http://test1.static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
+                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
                                 </div>
                                 <{else}>
                                 <div class="list">
-                                    <img src="http://test1.static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
+                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
                                 </div>
                                 <{/if}>
                             </a>
@@ -109,7 +107,6 @@
                     </ul>
                 </div>
             </section>
-            <!--金币-->
             <section class="gold-coin" style="display:none">
                 <div class="gold-coin-ctn">
                     <span>金币：</span><span class="goldcoins"></span><!-- <span class="arrow"></span> -->
@@ -121,13 +118,11 @@
                 </div>
             </section>
             <div class="live-starttime"><{$liveinfo.starttime|date_format:" %Y.%m.%d"}></div>
-            <!-- 评论列表 -->
             <section class="content-box">
                 <div class="room-chat-scroller" id="message">
                     <ul class="room-chat-messages" id="list-info"></ul>
                 </div>
             </section>
-            <!--送出礼品，两个线程进行操作-->
             <section class="left-side-cartoon">
                 <div class="effect hide">
                     <div class="wrap-cartoon">
@@ -156,8 +151,6 @@
                     </div>
                 </div>
             </section>
-            
-            <!-- 底部功能区 end-->
             <section class="btm-menu">
                 <div class="wrap-menu">
                 <{if $liveinfo.status==10}>
@@ -179,7 +172,6 @@
                     </div>
                 </div>
             </section>
-            <!-- 分享qq、微信、朋友圈 -->
             <section class="sns-share" style="display:none">
                 <div class="sns-ctn">
                     <div class="weibo sns">
@@ -248,7 +240,6 @@
         </figure>
         <{else}>
         <{/if}>    
-        <!-- 视频列表 -->
         <figure class="cut-off"></figure>
          <{if $total> 0}>
         <div class="more clearfix"><div class="fll">更多精彩内容</div><div class="frr"><a href="/www/live/hotlist">更多直播<span></span></a></div></div>
@@ -279,11 +270,7 @@
                                 <p class="name">
                                 <{$rs.nickname}>
                                     <{if $rs.ytypevt==1}>   
-                                        <!-- <{if $rs.ytypename=="明星"}> -->
-                                            <!-- <span class="rank star"></span> -->
-                                        <!-- <{else}> -->
                                             <span class="rank doyen"></span>
-                                        <!-- <{/if}> -->
                                     <{else}>
                                     <{/if}>
                                 </p>
@@ -326,7 +313,6 @@
                 </div>
             </div>
         </div>
-        <!--直播间红包-->
         <div class="player-lock" style="display:none"></div>
         <div class="lucky-money" style="display:none">
             <div class="close"></div>
@@ -381,6 +367,6 @@
 <script src="../static/js/gift.js"></script>
 <script src="../static/js/chat.js"></script>
 <script src="../static/js/init.js"></script>
-<script src="https://a.yzbo.tv/scripts/dist/mlink.min.js"></script>
+<script src="//a.yzbo.tv/scripts/dist/mlink.min.js"></script>
 </body>
 </html>

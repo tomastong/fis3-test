@@ -1150,72 +1150,72 @@ div.room-chat-scroller::-webkit-scrollbar{
     height: 0.4rem;
     vertical-align: middle;
     margin-left: .1rem;
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 .left-side-cartoon .wrap-cartoon .nickname .rank,
 .room-chat-item .room-chat-user-name .rank{
     margin-left: 0;margin-right: .1rem;
 }
-.r-1{background: url(../img/rank/1.png?__sprite) no-repeat;}
-.r-2{background: url(../img/rank/2.png?__sprite) no-repeat;}
-.r-3{background: url(../img/rank/3.png?__sprite) no-repeat;}
-.r-4{background: url(../img/rank/4.png?__sprite) no-repeat;}
-.r-5{background: url(../img/rank/5.png?__sprite) no-repeat;}
-.r-6{background: url(../img/rank/6.png?__sprite) no-repeat;}
-.r-7{background: url(../img/rank/7.png?__sprite) no-repeat;}
-.r-8{background: url(../img/rank/8.png?__sprite) no-repeat;}
-.r-9{background: url(../img/rank/9.png?__sprite) no-repeat;}
-.r-10{background: url(../img/rank/10.png?__sprite) no-repeat;}
-.r-11{background: url(../img/rank/11.png?__sprite) no-repeat;}
-.r-12{background: url(../img/rank/12.png?__sprite) no-repeat;}
-.r-13{background: url(../img/rank/13.png?__sprite) no-repeat;}
-.r-14{background: url(../img/rank/14.png?__sprite) no-repeat;}
-.r-15{background: url(../img/rank/15.png?__sprite) no-repeat;}
-.r-16{background: url(../img/rank/16.png?__sprite) no-repeat;}
-.r-17{background: url(../img/rank/17.png?__sprite) no-repeat;}
-.r-18{background: url(../img/rank/18.png?__sprite) no-repeat;}
-.r-19{background: url(../img/rank/19.png?__sprite) no-repeat;}
-.r-20{background: url(../img/rank/20.png?__sprite) no-repeat;}
-.r-21{background: url(../img/rank/21.png?__sprite) no-repeat;}
-.r-22{background: url(../img/rank/22.png?__sprite) no-repeat;}
-.r-23{background: url(../img/rank/23.png?__sprite) no-repeat;}
-.r-24{background: url(../img/rank/24.png?__sprite) no-repeat;}
-.r-25{background: url(../img/rank/25.png?__sprite) no-repeat;}
-.r-26{background: url(../img/rank/26.png?__sprite) no-repeat;}
-.r-27{background: url(../img/rank/27.png?__sprite) no-repeat;}
-.r-28{background: url(../img/rank/28.png?__sprite) no-repeat;}
-.r-29{background: url(../img/rank/29.png?__sprite) no-repeat;}
-.r-30{background: url(../img/rank/30.png?__sprite) no-repeat;}
-.r-31{background: url(../img/rank/31.png?__sprite) no-repeat;}
-.r-32{background: url(../img/rank/32.png?__sprite) no-repeat;}
-.r-33{background: url(../img/rank/33.png?__sprite) no-repeat;}
-.r-34{background: url(../img/rank/34.png?__sprite) no-repeat;}
-.r-35{background: url(../img/rank/35.png?__sprite) no-repeat;}
-.r-36{background: url(../img/rank/36.png?__sprite) no-repeat;}
-.r-37{background: url(../img/rank/37.png?__sprite) no-repeat;}
-.r-38{background: url(../img/rank/38.png?__sprite) no-repeat;}
-.r-39{background: url(../img/rank/39.png?__sprite) no-repeat;}
-.r-40{background: url(../img/rank/40.png?__sprite) no-repeat;}
-.r-41{background: url(../img/rank/41.png?__sprite) no-repeat;}
-.r-42{background: url(../img/rank/42.png?__sprite) no-repeat;}
-.r-43{background: url(../img/rank/43.png?__sprite) no-repeat;}
-.r-44{background: url(../img/rank/44.png?__sprite) no-repeat;}
-.r-45{background: url(../img/rank/45.png?__sprite) no-repeat;}
-.r-46{background: url(../img/rank/46.png?__sprite) no-repeat;}
-.r-47{background: url(../img/rank/47.png?__sprite) no-repeat;}
-.r-48{background: url(../img/rank/48.png?__sprite) no-repeat;}
-.r-49{background: url(../img/rank/49.png?__sprite) no-repeat;}
-.r-50{background: url(../img/rank/50.png?__sprite) no-repeat;}
-.r-51{background: url(../img/rank/51.png?__sprite) no-repeat;}
-.r-52{background: url(../img/rank/52.png?__sprite) no-repeat;}
-.r-53{background: url(../img/rank/53.png?__sprite) no-repeat;}
-.r-54{background: url(../img/rank/54.png?__sprite) no-repeat;}
-.r-55{background: url(../img/rank/55.png?__sprite) no-repeat;}
-.r-56{background: url(../img/rank/56.png?__sprite) no-repeat;}
-.r-57{background: url(../img/rank/57.png?__sprite) no-repeat;}
-.r-58{background: url(../img/rank/58.png?__sprite) no-repeat;}
-.r-59{background: url(../img/rank/59.png?__sprite) no-repeat;}
-.r-60{background: url(../img/rank/60.png?__sprite) no-repeat;}
+.r-1{background: url(../img/rank/1.png) no-repeat;}
+.r-2{background: url(../img/rank/2.png) no-repeat;}
+.r-3{background: url(../img/rank/3.png) no-repeat;}
+.r-4{background: url(../img/rank/4.png) no-repeat;}
+.r-5{background: url(../img/rank/5.png) no-repeat;}
+.r-6{background: url(../img/rank/6.png) no-repeat;}
+.r-7{background: url(../img/rank/7.png) no-repeat;}
+.r-8{background: url(../img/rank/8.png) no-repeat;}
+.r-9{background: url(../img/rank/9.png) no-repeat;}
+.r-10{background: url(../img/rank/10.png) no-repeat;}
+.r-11{background: url(../img/rank/11.png) no-repeat;}
+.r-12{background: url(../img/rank/12.png) no-repeat;}
+.r-13{background: url(../img/rank/13.png) no-repeat;}
+.r-14{background: url(../img/rank/14.png) no-repeat;}
+.r-15{background: url(../img/rank/15.png) no-repeat;}
+.r-16{background: url(../img/rank/16.png) no-repeat;}
+.r-17{background: url(../img/rank/17.png) no-repeat;}
+.r-18{background: url(../img/rank/18.png) no-repeat;}
+.r-19{background: url(../img/rank/19.png) no-repeat;}
+.r-20{background: url(../img/rank/20.png) no-repeat;}
+.r-21{background: url(../img/rank/21.png) no-repeat;}
+.r-22{background: url(../img/rank/22.png) no-repeat;}
+.r-23{background: url(../img/rank/23.png) no-repeat;}
+.r-24{background: url(../img/rank/24.png) no-repeat;}
+.r-25{background: url(../img/rank/25.png) no-repeat;}
+.r-26{background: url(../img/rank/26.png) no-repeat;}
+.r-27{background: url(../img/rank/27.png) no-repeat;}
+.r-28{background: url(../img/rank/28.png) no-repeat;}
+.r-29{background: url(../img/rank/29.png) no-repeat;}
+.r-30{background: url(../img/rank/30.png) no-repeat;}
+.r-31{background: url(../img/rank/31.png) no-repeat;}
+.r-32{background: url(../img/rank/32.png) no-repeat;}
+.r-33{background: url(../img/rank/33.png) no-repeat;}
+.r-34{background: url(../img/rank/34.png) no-repeat;}
+.r-35{background: url(../img/rank/35.png) no-repeat;}
+.r-36{background: url(../img/rank/36.png) no-repeat;}
+.r-37{background: url(../img/rank/37.png) no-repeat;}
+.r-38{background: url(../img/rank/38.png) no-repeat;}
+.r-39{background: url(../img/rank/39.png) no-repeat;}
+.r-40{background: url(../img/rank/40.png) no-repeat;}
+.r-41{background: url(../img/rank/41.png) no-repeat;}
+.r-42{background: url(../img/rank/42.png) no-repeat;}
+.r-43{background: url(../img/rank/43.png) no-repeat;}
+.r-44{background: url(../img/rank/44.png) no-repeat;}
+.r-45{background: url(../img/rank/45.png) no-repeat;}
+.r-46{background: url(../img/rank/46.png) no-repeat;}
+.r-47{background: url(../img/rank/47.png) no-repeat;}
+.r-48{background: url(../img/rank/48.png) no-repeat;}
+.r-49{background: url(../img/rank/49.png) no-repeat;}
+.r-50{background: url(../img/rank/50.png) no-repeat;}
+.r-51{background: url(../img/rank/51.png) no-repeat;}
+.r-52{background: url(../img/rank/52.png) no-repeat;}
+.r-53{background: url(../img/rank/53.png) no-repeat;}
+.r-54{background: url(../img/rank/54.png) no-repeat;}
+.r-55{background: url(../img/rank/55.png) no-repeat;}
+.r-56{background: url(../img/rank/56.png) no-repeat;}
+.r-57{background: url(../img/rank/57.png) no-repeat;}
+.r-58{background: url(../img/rank/58.png) no-repeat;}
+.r-59{background: url(../img/rank/59.png) no-repeat;}
+.r-60{background: url(../img/rank/60.png) no-repeat;}
 
 
 .bg-1,
@@ -1305,22 +1305,33 @@ div.room-chat-scroller::-webkit-scrollbar{
 }
 
 .scale {
-    animation: scale1 0.4s ease;
-    -webkit-animation: scale1 0.4s ease;
+    animation: zoomIn 0.4s ease;
+    -webkit-animation: zoomIn 0.4s ease;
     -webkit-transform-style: preserve-3d;
 }
 
-@keyframes scale1 {
-    from {
-        transform: scale(1.8, 1.8);
-        -webkit-transform: scale(1.8, 1.8);
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(8,8,8)
     }
-    to {
-        transform: scale(1, 1);
-        -webkit-transform: scale(1, 1);
+
+    100%,60%,75% {
+        opacity: 1;
+        -webkit-transform: scale3d(1,1,1)
     }
 }
+@-webkit-keyframes zoomIn {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale3d(8,8,8)
+    }
 
+    100%,60%,75% {
+        opacity: 1;
+        -webkit-transform: scale3d(1,1,1)
+    }
+}
 
 /*进入直播间///////////////////////////////////////////////////////////////*/
 

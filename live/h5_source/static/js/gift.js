@@ -91,7 +91,7 @@ var render = function() {
                     setTimeout(function(){
                         $(".count", stage).removeClass("scale");
                         animate(data);      // 变换一次数字执行一次动画
-                    },250);
+                    },400);
                 } else {
                     setTimeout(arguments.callee, boomtime)  
                     // 这里只是判断时间停留够不够6秒
