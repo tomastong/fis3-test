@@ -6,8 +6,9 @@ nginx.conf 重要配置（部分）
 
     #static.yizhobo.com /Users/yfj/work/test/
     server {
-        listen  80;                            // 设置本地代理的端口
-        server_name  teststatic.yizhibo.com;   // 设置本地代理的域名，也可以是www.hongyan.com
+        listen  80;                            // 设置本地nginx代理的端口
+        server_name  teststatic.yizhibo.com;   // 设置本地nginx代理的域名，也可以是www.hongyan.com
+                                               //代理的目录，我们访问的就是这个文件夹的内容 
         root  /Users/yfj/work/mp/git/static_yizhibo_com/pc_live_h5source/h5_source/;
         #http://t1.com/pc_live_h5source/h5_source/static/roomjs/room.js
         #http://teststatic.yizhibo.com/pc_live/static/roomjs/room.js
@@ -22,9 +23,9 @@ nginx.conf 重要配置（部分）
     }
     #t1.com /Users/yfj/work/test/
     server {
-        listen  80;
-        server_name  t1.com;
-        root  /Users/yfj/work/mp/git/static_yizhibo_com/; 
+        listen  80;                             // 设置本地nginx代理的端口
+        server_name  t1.com;                    // 设置本地nginx代理的域名，也可以是www.hongyan.com
+        root  /Users/yfj/work/mp/git/static_yizhibo_com/;       //代理的目录，我们访问的就是这个文件夹的内容
         location ~ ^.+\.(ico|gif|jpg|jpeg|png|html|htm|js|css|jsp|swf)$ {
             add_header 'Access-Control-Allow-Origin' '*';
             ssi on;
