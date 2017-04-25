@@ -16,7 +16,6 @@
     <script src="../static/libjs/jquery-2.1.1.min.js"></script>
     <script src="../static/libjs/template.js"></script>
     <script src="../static/libjs/flexible.0.3.4.js"></script>
-    <script src="//a.yzbo.tv/scripts/dist/mlink.min.js"></script>
 </head>
 
 <body>
@@ -24,6 +23,9 @@
         <div class="hotlist-index">
             <figure class="index-bg">
                 <img src="../static/img/h5_room/index-bg.png">
+            </figure>
+            <figure class="index-bg" style="display: none">
+                <img src="../static/img/h5_room/index-bg-2.png">
             </figure>
             <figure class="logo">
                 <img src="../static/img/h5_room/yzb-logo.png">
@@ -34,7 +36,7 @@
             <figure class="download btnOpenApp">
                 <img src="../static/img/h5_room/download.png">
             </figure>
-            <figure class="arrow"><img src="../static/img/h5_room/arrow.png"></figure>
+            <figure class="arrow"><img src="../static/img/h5_room/above-arrow.png"></figure>
         </div>
         <figure class="cut-off"></figure>
         <div class="hotlist-wrap">
@@ -79,54 +81,47 @@
         {{/each}}
     </script>
     <script>
-        var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
-        var sUserAgent = navigator.userAgent.toLowerCase();
-        var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger";
-        var qq = navigator.userAgent.match(/QQ\//i) == "QQ/";
-        var weibo = sUserAgent.match(/WeiBo/i) == "weibo";
 
-        $(function(){
-            new Mlink({
-                mlink : "https://a.yzbo.tv/AAah",
-                button : document.querySelectorAll(".btnOpenApp")
-            });
+        (function(win, $){
+            var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger";
+            var qq = navigator.userAgent.match(/QQ\//i) == "QQ/";
+            var weibo = sUserAgent.match(/WeiBo/i) == "weibo";
 
             var opt = {
                 requestData:function(){
-                    if($("ul li").length < 200){
-                        var page = $("ul li").length / 20 + 1;
-                        $.ajax({
-                            url:"/www/live/get_hot_list",
-                            type:"post",
-                            async:false,
-                            data:{"page":page,"limit":"20"},
-                            dataType:"json",
-                            success:function(data){
-                                opt.scrollLoading(data.data.list);
-                            },
-                            error:function(data){
-                                console.log("net error.");
-                            }
-                        })
-                    }else{
-                        return;
-                    }
+                    if(!$("ul li").length >= 200) return;
+                    var page = $("ul li").length / 20 + 1;
+                    $.ajax({
+                        url:"/www/live/get_hot_list",
+                        type:"post",
+                        async:false,
+                        data:{"page":page,"limit":"20"},
+                        dataType:"json",
+                        success:function(data){
+                            opt.scrollLoading(data.data.list);
+                        },
+                        error:function(data){
+                            console.log("net error.");
+                        }
+                    })
+                   
                 },
                 scrollLoading:function(arr){
                     $(".list").append(template("list",{'data' : arr}));
                 },
                 recharge:function(){
                     $(".recharge").on(clickOrTouch,function(){
-                        var domain = location.hostname;
-                        var child = domain.substr(0,domain.indexOf("."));
-                        child += ".";
-                        if(child != "dev."&&child != "test."){child = "";}
-                            window.location.href = 'https://'+child+'pay.yizhibo.com/product/api/get_product_list_h5';
+                        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+                        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+                        win.location.href = '//'+prefix+'static.yizhibo.com/html/h5pay/pay-checkstand.html';
                     })
                 },
                 init:function(){
                     if(qq || weixin || weibo){
-                        $(".hotlist-index .index-bg img").attr("src",'../static/img/h5_room/index-bg-2.png');
+                        $(".hotlist-index .index-bg").eq(0).hide();
+                        $(".hotlist-index .index-bg").eq(1).show();
                         $(".hotlist-index .logo").css("top","1.47rem");
                         $(".hotlist-index .download").css("top","13.373rem");
                     }
@@ -135,19 +130,38 @@
                 }
             }
 
-            opt.init();
+            $(function(){
+                new Mlink({
+                    mlink : "https://a.yzbo.tv/AAah",
+                    button : document.querySelectorAll(".btnOpenApp")
+                });
 
-            $(window).scroll(function () {
-                if ($(document).scrollTop()+$(window).height()
-                       >=$(document).height()-200) {
-                    opt.requestData();
-                }
-                $(document).scrollTop()>$(window).height()?$(".footer").show():$(".footer").hide();
+                opt.init();
+
+                $(window).scroll(function () {
+                    if ($(document).scrollTop()+$(window).height()
+                           >=$(document).height()-200) {
+                        opt.requestData();
+                    }
+                    $(document).scrollTop()>$(window).height()?$(".footer").show():$(".footer").hide();
+                });
             });
-        });
-
+            
+        })(window, jQuery)
+        
+        // quemobile统计
+        var _maq = _maq || [];
+        _maq.push(['_setAccount', 'yizhibo_roomlist']);
+        (function() {
+        var ma = document.createElement('script');
+        ma.type = 'text/javascript'; 
+        ma.async = true;
+        ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.qchannel03.cn/m.js'; 
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+                })();
 
    </script>
+   <script src="//a.yzbo.tv/scripts/dist/mlink.min.js"></script>
 </body>
 
 </html>

@@ -5,64 +5,22 @@ var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger",
     qq = navigator.userAgent.match(/QQ\//i) == "QQ/",
     weibo = sUserAgent.match(/WeiBo/i) == "weibo";
 var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
-//android全屏播放
-// if (bIsAndroid) {
-//     window.addEventListener('orientationchange', function(event) {
-//         if (window.orientation == 180 || window.orientation == 0) {
-//             alert("竖屏");
-//             $('#video').get(0).play();
-//         }
-//         if (window.orientation == 90 || window.orientation == -90) {
-//             //alert("横屏");
-//         }
-//     });
+var appCtl = false;
 
-// }
+// 新浪新闻订制
+window.onpause = function(){
+    if(appCtl || $('#video')[0].paused) return ;
+    $('#video')[0].pause();
+    appCtl = true;
+}
+window.onresume = function(){
+    if(!appCtl) return;
+    $('.videobg, .pause').hide();
+    $('#video')[0].play();
+    appCtl = false;
+}
 
-// function is_weixin() {
-//     var ua = navigator.userAgent.toLowerCase();
-//     if (ua.match(/MicroMessenger/i) == "micromessenger") {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
-
-// function download() {
-//     if (is_weixin()) {
-//         window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=tv.xiaoka.live";
-//     } else {
-//         if (bIsAndroid) {
-//             // window.location.href = "http://m.xiaoka.tv/download/xiaokatv.php";
-//             window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=tv.xiaoka.live";
-//         } else {
-//             window.location.href = "https://itunes.apple.com/app/xiao-katv/id1059274584";
-//         }
-//     }
-// }
-
-// //唤起APP
-// function lanchLiveInfo(type, liveid) {
-//     if (weixin || qq) {
-//         $('#school_browser').show();
-//         $('.f-layout').css('top', $('#school_browser').height());
-//         $(window).scrollTop(0);
-//     } else {
-//         var url_prefix = 'jump';
-//         var url = 'xktv://' + url_prefix + '?type=' + type + '&dataStr=' + liveid;
-//         window.location.href = url;
-//         setTimeout(function() {
-//             download();
-//         }, 2000);
-//     }
-// }
-
-// function appDownload() {
-//     document.getElementById('school_browser').style.display = 'block';
-//     download();
-// }
-
-/*baidu 统计代码*/
+// 百度统计
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
@@ -70,3 +28,14 @@ var _hmt = _hmt || [];
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
+
+// que统计
+var _maq = _maq || [];
+_maq.push(['_setAccount', 'yizhibo_room']);
+(function() {
+var ma = document.createElement('script');
+ma.type = 'text/javascript'; 
+ma.async = true;
+ma.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'www.qchannel03.cn/m.js'; 
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ma, s);
+        })();

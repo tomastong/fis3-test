@@ -7,7 +7,10 @@ html {
     -webkit-text-size-adjust: none;
     -moz-text-size-adjust: none;
 }
-
+* {
+    touch-action: none;
+    -webkit-overflow-scrolling : touch;
+}
 body {
     margin: 0 auto;
     width: 10.0rem;
@@ -32,6 +35,8 @@ body {
 .more-list-box li a:visited{text-decoration: none !important;}
 .more-list-box li a:hover{text-decoration: none !important;}
 .more-list-box li a:active{text-decoration: none !important;}
+a.subs:visited{color:#f9743a}
+a.enter_live_room:visited{color:#fff}
 
 /*设定直播结束样式*/
 .live-end{
@@ -100,7 +105,8 @@ body {
 /*设置视频的样式*/
 .vod-box-pl {
     position: relative !important;
-    overflow: hidden
+    overflow: hidden;
+    background-color: #000;
 }
 
 /*.vod-box-pl img,*/
@@ -530,7 +536,7 @@ div.room-chat-scroller::-webkit-scrollbar{
     width: 0.146667rem;
     height: 0.293333rem;
     margin-left: 0.146667rem;
-    vertical-align: middle;
+    vertical-align: baseline;
     background: url(../img/h5_room/arrow.png?__inline) no-repeat;
     background-size: 100% 100%;
 }
@@ -589,11 +595,13 @@ div.room-chat-scroller::-webkit-scrollbar{
 .more-list-box li .item .status{
     top: 0.16rem;
     right: 0.16rem;
-    padding: 0 0.24rem;
+    padding: 0 .186667rem 0 .24rem;
     height: 0.533333rem;
+    margin-left: -4px;
     border-radius: 0.266667rem;
-    border:1px solid #eee;
+    border:1px solid rgba(255, 255, 255, 0.3);
     text-align: center;
+    font-size: 0.32rem;
     line-height: 0.533333rem;
     background-color: rgba(0,0,0,0.3);
 }
@@ -658,7 +666,7 @@ div.room-chat-scroller::-webkit-scrollbar{
 /*/////////////////////////////////////////////////////*/
 
 .btm-menu {
-    bottom: 1.8rem !important;
+    bottom: 1.86667rem !important;
 }
 
 .btm-menu .wrap-menu {
@@ -688,7 +696,11 @@ div.room-chat-scroller::-webkit-scrollbar{
     background-color: rgba(0,0,0,0.2);
     border-radius: 0.48rem
 }
+.input-border{
+    border: 1px solid rgba(47, 47, 47, 1);
+    box-sizing: border-box;
 
+}
 .btm-menu .wrap-menu .w-input input {
     padding-left: 0.266667rem;
     width: 6rem;
@@ -802,6 +814,8 @@ div.room-chat-scroller::-webkit-scrollbar{
     text-align: center;
     border-radius: .48rem;
     background-color: #fff;
+    display: block;
+    text-decoration: none;
 }
 
 #video-box .top-attend-layer .user-info {
@@ -1089,12 +1103,12 @@ div.room-chat-scroller::-webkit-scrollbar{
 
 .left-side-cartoon {
     position: absolute;
-    bottom: 7.5rem;
+    bottom: 8rem;
     left: .3rem;
     z-index: 8
 }
 .left-side-cartoon .effect {
-    margin: .5rem 0 1rem -8rem;
+    margin: .5333rem 0 0rem -8rem;
     width: 4.186667rem;
     border-radius: 0.506667rem;
     background-color: rgba(249, 168, 80, .7);
@@ -1107,7 +1121,15 @@ div.room-chat-scroller::-webkit-scrollbar{
     font-size: 0;
     border-radius: 0.426667rem;
 }
-
+.luxury{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    color: #fff;
+}
 .left-side-cartoon .wrap-cartoon .cartoon-avatar {
     display: inline-block;
     margin: 0.02rem 0.133333rem 0.02rem 0.02rem;
@@ -1139,7 +1161,7 @@ div.room-chat-scroller::-webkit-scrollbar{
 .left-side-cartoon .wrap-cartoon p + p {
     top: 0.55rem;
 }
-
+.gifter .rank,
 .left-side-cartoon .wrap-cartoon .nickname .rank,
 .room-chat-item .enter .wrap-enter .rank,
 .room-chat-item .gz .wrap-enter .rank,
@@ -1449,7 +1471,7 @@ div.room-chat-scroller::-webkit-scrollbar{
     z-index: 88;
 }
 
-.lucky-money {
+.leadReece {
     position: fixed;
     margin: auto;
     left: 0;
@@ -1463,12 +1485,12 @@ div.room-chat-scroller::-webkit-scrollbar{
     z-index: 90;
     overflow: hidden;
 }
-.lucky-money a{
+.leadReece a{
     position: relative;
     display: block;
     z-index: 1000;
 }
-.lucky-money .close {
+.leadReece .close {
     position: absolute;
     z-index: 20;
     right: 0.32rem;
@@ -1479,16 +1501,16 @@ div.room-chat-scroller::-webkit-scrollbar{
     background-size: 100% 100%;
 
 }
-.lucky-money figure {
+.leadReece figure {
     position: absolute;
     width: 100%;
     height: 100%;
 }
-.lucky-money figure img {
+.leadReece figure img {
     width: 100%;
     height: 100%;
 }
-.lucky-money p {
+.leadReece p {
     position: relative;
     margin-top: 4.746667rem;
     font-size: 0.48rem;
@@ -1497,8 +1519,10 @@ div.room-chat-scroller::-webkit-scrollbar{
     color: #fff;
     text-align: center;
 }
-.lucky-money .openapp {
+.leadReece .openapp {
     position: relative;
+    display: block;
+    text-decoration: none;
     margin:0.84rem auto auto;
     width: 3.413333rem;
     height: 1.066667rem;
@@ -1553,6 +1577,8 @@ div.room-chat-scroller::-webkit-scrollbar{
 .user_live_room .user_desc dd{opacity: .5;}
 .user_live_room .enter_live_room{
     position: absolute;
+    display: block;
+    text-decoration: none;
     top: .373333rem;
     right: .506667rem;
     width: 2.346667rem;
@@ -1574,6 +1600,7 @@ div.room-chat-scroller::-webkit-scrollbar{
     bottom: 0;
     right: 0;
     width: 10rem;
+    text-decoration: none;
     height: 1.626667rem;
     background-color: rgb( 26, 26, 31 );
     opacity: 0.9;
@@ -1689,7 +1716,7 @@ a.btnOpenApp{text-decoration: none;}
     -webkit-box-sizing: border-box; 
     -moz-box-sizing: border-box;    
 }
-.login .login-wrap .login-close{
+.login .login-wrap .close{
     position: absolute;
     width: 0.746667rem;
     height: 0.72rem;
@@ -1721,4 +1748,94 @@ a.btnOpenApp{text-decoration: none;}
     position: absolute;
     font-size: 0.266667rem;
     text-shadow: 0px 1px 2px rgba(0,0,0,.3);
+}
+/*添加付费直播遮罩层*/
+.pay-live {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 7.466667rem;
+    height: 3.733333rem;
+    border-radius: 0.213333rem;
+    background-color: #fff;
+    z-index: 12;
+}
+.pay-live p{
+    margin-top: 0.8rem;
+    height: 0.56rem;
+    font-size: 0.4rem;
+    text-align: center;
+}
+.pay-live .buy-btn{
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+    height: 0.933333rem;
+    width: 6.133333rem;
+    background-color: #FF834C;
+    color: #fff;
+    border-radius: 1.946667rem;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 0.373333rem;
+    line-height: .933333rem;
+    margin-top: 0.906667rem;
+}
+
+.placeholder{
+    display: inline-block;
+    width: 0;
+    min-height: inherit;
+    height: inherit;
+    vertical-align: middle;
+    visibility: hidden;
+    overflow: hidden;
+}
+.hide{
+    display: none;
+}
+.gifter{
+    display: none;
+    position: absolute;
+    top: 2.346667rem;
+    height: 0.746667rem;
+    line-height: 0.746667rem;
+    font-size: 0;
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 0.373333rem;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.gifter figure{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 0.053333rem;
+    width: 0.64rem;
+    height: 0.64rem;
+    border-radius: 50%;
+}
+.gifter figure img{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+.gifter .info{
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 0.346667rem;
+    font-size: 0.346667rem;
+    color: #fff;
+    font-family: PingFangSC-Regular;
+}
+.gifter .info .nickname{
+    margin: 0 0.133333rem; 
+    max-width: 2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
 }

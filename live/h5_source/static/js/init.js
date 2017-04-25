@@ -1,42 +1,28 @@
-$(function() {
-    h5_req.init();
-    page_elem.init();
-    chat.init(); 
-})
+;!(function(win, ns, $){
+    var exports = window[ns] = window[ns] || {};
 
+    win[ns] = exports = {
+        gifttemp : {},
+        giftcache:function(){
+            var that = this, d = {};
+            $.ajax({  
+                url:shareConfig.url.get_gift_list_background,  
+                type: "get",  
+                async: false,  
+                dataType: "jsonp",  
+                jsonp: "callback",
+                jsonpCallback: "return_callback"
 
-var h5_req = {
-    giftobj : {},
-    fit_screen : function(){
-        if (shareConfig.sObj.status == 1) {
-            $('#video-box').remove();
-        } else {
-            if ($("#video").length != 0) {
-                // 隐藏控制菜单
-                document.getElementById("video").controls = false;
-            } else if ($("#em").length != 0) {
-                $('#em').css("width", "10.0rem");
-            }
-            $('#video-box').css("width", $(window).width());
-            $('#video-box').css("height", $(window).height());
-        }
-    },
-    req_data : function(){
-        var that = this;
-        $(".pause").show();
-        $.ajax({
-            url: shareConfig.url.get_gift_list_h5,
-            type: "get",
-            success: function(data) {
-                i = 0;
-                // template("giftlist",data.data);
-                data.data.list.map(function(item) {
-                    that.giftobj['gift'+item.giftid] = item; 
+            }).done(function(data) {
+                // var i = 0;
+                data.data.list.map(function(item, i) {
+                    d['gift'+item.giftid] = item; 
+
                     if (i % 8 == 0 && i != 0) {
                         $("<div class='mui-slider-item'></div>").appendTo($(".mui-slider-group"));
                         $("<div class='mui-indicator'></div>").appendTo($(".mui-slider-indicator"));
                     }
-                    var oelem = $("<div class='elem' data-giftid='" + item.giftid + "'></div>").appendTo($($(".mui-slider-item")[Math.floor(i / 8)]));
+                    var oelem = $("<div class='elem' data-giftid='" + item.giftid + "'></div>").appendTo($(".mui-slider-item").eq(Math.floor(i / 8)));
                     var ofigure = $("<figure></figure>").appendTo(oelem);
                     var odiv = $("<div class=" + (item.isbursts ? 'lian' : '') + "></div>").appendTo(ofigure);
                     var oimg = $("<img src=" + item.cover + ">").appendTo(ofigure);
@@ -44,33 +30,42 @@ var h5_req = {
                     var op = $("<p class='gift-name'>" + item.name + "</p>").appendTo(ofigure);
                     var op2 = $("<p>" + item.goldcoin + "个金币</p>").appendTo(ofigure);
 
-                    i++;
+                    // i++;
                 })
-                mui(".mui-slider").slider();
-            },
-            error: function() {
-                console.log("gift list error.");
-            }
-        })
-    },
-    loading_user : function(){
-        $.ajax({
-                url: shareConfig.url.get_my_wallet,
-                type: "get",
-                success: function(data) {
-                    if (data.result == 1) {
-                        user = data.data;
-                        $(".recharge").html("<span>充值&nbsp;&nbsp;</span>" + user.goldcoin + "金币&nbsp;&nbsp;&gt;");
-                    }
-                },
-                error: function() {
-                    console.log("loading user error.");
-                }
-        });   
-    },
-    init:function(){
-        this.fit_screen();
-        this.req_data();
-        this.loading_user();
+
+                // mui(".mui-slider").slider();
+                mui('#slider');
+            })
+
+            exports.gifttemp =  d;
+        },
+        getuser : (function(){
+            $.ajax({
+                    url: shareConfig.url.get_my_wallet,
+                    type: "get"
+            }).done(function(data) {
+                if (data.result != 1) return;
+                user = data.data;
+                $(".recharge").html("<span>充值&nbsp;&nbsp;</span>" + user.goldcoin + "金币&nbsp;&nbsp;&gt;");
+            }).fail(function() {
+                console.log("loading user error.");
+            })
+        })(),
+        ajaxinit:(function(){
+            $(document).ajaxError(function(event,xhr,options,exc){          
+                if(xhr.status==0)
+                    jAlert("无网络,请打开网络连接再试!",''); 
+                else
+                    jAlert("服务器返回错误! 错误代码:"+xhr.status,'');
+            }).ajaxSuccess(function(a,b,c,e){
+               // 登录成功
+            }).ajaxComplete(function(){
+                // 处理加载
+                //     loading.destroy();
+            }).ajaxStart(function(){
+                // 处理加载
+            });
+        })()
     }
-}
+    $(function(){exports.giftcache();})
+})(window, 'initData', jQuery)

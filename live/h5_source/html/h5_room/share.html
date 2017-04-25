@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../static/css/touch.css">
     <script src="../static/libjs/sewise.player.min.js"></script>
     <script src="../static/libjs/jquery-2.1.1.min.js"></script>
+    <script src="../static/libjs/jquery.alerts.js"></script>
     <script src="../static/libjs/flexible.0.3.4.js"></script>
     <script src="../static/libjs/socket.io.js"></script>
     <script src="../static/libjs/mui.min.js"></script>
@@ -52,8 +53,10 @@
         <{elseif $liveinfo.status==10 || $liveinfo.status==11}>
       
         <figure id="video-box" class="vod-box-pl">
+            <{if $liveinfo.showtype!=3}>
             <video x5-video-player-type="h5" x5-video-player-fullscreen="true" style="background:rgb(0,0,0)"  id="video" loop="loop" width="100%"  preload="auto" poster=""  webkit-playsinline="true" playsinline="true" x-webkit-airplay="true" src="<{$liveinfo.m3u8url}>"></video>
-            <div class="videobg" style="position:absolute;width:100%;height:100%;top:0;background-image: url('<{$liveinfo.covers.b}>');background-position: center center;background-size: cover; background-color:transparent;"
+            <{/if}>
+            <div class="videobg" style="position:absolute;width:100%;height:100%;top:0;background-image: url('<{$liveinfo.covers.b}>');background-position: center center;background-size: cover;"
             ></div>
             <section class="top-attend-layer">
                 <div class="user-info">
@@ -85,7 +88,7 @@
                             <{/if}>
                           </dd>
                       </dl>
-                      <div class="subs enter_room">关注</div>
+                      <a id="enter_room" class="subs">关注</a>
                 </div>
                 <div class="avatar-ls-wrap">
                     <ul class="avatar-ls">
@@ -94,11 +97,11 @@
                             <a href="javascript:void(0);"><img src="<{$value.avatar}>" alt="">
                                 <{if $k < 3}>
                                 <div class="list">
-                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
+                                    <img src="//test.static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
                                 </div>
                                 <{else}>
                                 <div class="list">
-                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
+                                    <img src="//test.static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
                                 </div>
                                 <{/if}>
                             </a>
@@ -114,7 +117,8 @@
             </section>
             <section class="yizhibo-logo">
                 <div class="yizhibo-logo-ctn">
-                    <span>一直播 ID：</span><span><{$liveinfo.memberid}></span>
+                    <!-- <span>一直播 ID：</span><span><{$liveinfo.memberid}></span> -->
+                    <span><{$liveinfo.watermark_text}></span>
                 </div>
             </section>
             <div class="live-starttime"><{$liveinfo.starttime|date_format:" %Y.%m.%d"}></div>
@@ -123,34 +127,44 @@
                     <ul class="room-chat-messages" id="list-info"></ul>
                 </div>
             </section>
-            <section class="left-side-cartoon">
-                <div class="effect hide">
-                    <div class="wrap-cartoon">
-                        <figure class="cartoon-avatar">
-                            <img src="" alt="">
-                        </figure>
-                        <p class="nickname"><span class="rank"></span></p>
-                        <p class="desc"></p>
-                        <figure class="gift">
-                            <img src="" alt="">
-                        </figure>
-                        <h4 class="count">×&nbsp;1</h4>
+            <section class="cover" id="J_cover">
+                <div class="left-side-cartoon">
+                    <div class="effect hide">
+                        <div class="wrap-cartoon">
+                            <figure class="cartoon-avatar">
+                                <img src="" alt="">
+                            </figure>
+                            <p class="nickname"><span class="rank"></span></p>
+                            <p class="desc"></p>
+                            <figure class="gift">
+                                <img src="" alt="">
+                            </figure>
+                            <h4 class="count">×&nbsp;1</h4>
+                        </div>
+                    </div>
+                    <div class="effect hide">
+                        <div class="wrap-cartoon">
+                            <figure class="cartoon-avatar">
+                                <img src="" alt="">
+                            </figure>
+                            <p class="nickname"><span class="rank"></span></p>
+                            <p class="desc"></p>
+                            <figure class="gift">
+                                <img src="" alt="">
+                            </figure>
+                            <h4 class="count">×&nbsp;1</h4>
+                        </div>
                     </div>
                 </div>
-                <div class="effect hide">
-                    <div class="wrap-cartoon">
-                        <figure class="cartoon-avatar">
-                            <img src="" alt="">
-                        </figure>
-                        <p class="nickname"><span class="rank"></span></p>
-                        <p class="desc"></p>
-                        <figure class="gift">
-                            <img src="" alt="">
-                        </figure>
-                        <h4 class="count">×&nbsp;1</h4>
-                    </div>
+                <div class="luxury hide" id="J_luxury"></div>
+                <div class="gifter">
+                      <div class="placeholder"></div>
+                      <figure><img src="" alt=""></figure>
+                      <span class="rank r-6"></span>
+                      <div class="info"><span class="nickname">MC 悠悠</span>送出</div>
                 </div>
             </section>
+            
             <section class="btm-menu">
                 <div class="wrap-menu">
                 <{if $liveinfo.status==10}>
@@ -162,10 +176,14 @@
                     </div>
                 <{else}>
                 <{/if}>
-                    <figure></figure>
+                    <figure class="cut"></figure>
                     <span class="send-msg">发送</span>
                     <div class="w-share">
-                        <figure><img src="../static/img/h5_room/share.png" alt=""></figure>
+                    <{if $liveinfo.vscreen==1}>
+                        <figure class="vs-share"><img src="../static/img/h5_room/share.png"></figure>
+                    <{else}>
+                        <figure class="ls-share"><img src="../static/img/h5_room/ls-share.png"></figure>
+                    <{/if}>
                     </div>
                     <div class="w-gift">
                         <figure><img src="../static/img/h5_room/gift.png" alt=""></figure>
@@ -174,7 +192,7 @@
             </section>
             <section class="sns-share" style="display:none">
                 <div class="sns-ctn">
-                    <div class="weibo sns">
+                    <div class="weibo sns" data-sns="weibo">
                         <figure><img src="../static/img/h5_room/weibo.png" alt="微博"></figure>
                         <p>微博</p>
                     </div>
@@ -186,7 +204,7 @@
                         <figure><img src="../static/img/h5_room/friend-circle.png" alt="朋友圈"></figure>
                         <p>朋友圈</p>
                     </div>
-                    <div class="qq sns">
+                    <div class="qq sns" data-sns="qq">
                         <figure><img src="../static/img/h5_room/QQ.png" alt="QQ"></figure>
                         <p>QQ</p>
                     </div>
@@ -195,7 +213,7 @@
             </section>
             <div class="mui-slider gift-slider" style="display:none">
                 <div class="mui-slider-group">
-                    <div class="mui-slider-item"></div>
+                    <div class="mui-slider-item mui-active"></div>
                 </div>
                 <div class="mui-slider-indicator pagination">
                     <div class="mui-indicator mui-active"></div>
@@ -223,6 +241,10 @@
                     </figure>
                 </div>
             </div>
+            <div class="pay-live" style="display: none">
+                <p>本直播间需要购买门票才能观看</p>
+                <a id="enter_room" class="buy-btn">去购买</a>
+            </div>
             <section class="user_live_room">
                 <figure class="user_avatar">
                     <img src="<{$liveinfo.avatar}>">
@@ -235,7 +257,7 @@
                     <dt><{if $liveinfo.nickname==''}>&nbsp;<{else}><{$liveinfo.nickname}><{/if}></dt>
                     <dd>邀请你来我的直播间</dd>
                 </dl>
-            <div class="enter_live_room enter_room">进入直播间</div>
+            <a id="enter_room" class="enter_live_room">进入直播间</a>
             </section>
         </figure>
         <{else}>
@@ -252,6 +274,7 @@
                             <figure>
                                 <img src="<{$rs.covers.s}>" alt="">
                                 <div class="status">
+                                <div class="placeholder"></div>
                                     <{if $rs.status==10}>
                                     <span class="icon"></span>直播中
                                     <{else}>
@@ -302,7 +325,7 @@
         </ul>
         <{/if}> 
         <div class="assist"></div>
-        <div class="footer btnOpenApp">
+        <a id="btnOpenApp" class="footer">
             <div class="footer-wrap">
                 <figure>
                     <img src="../static/img/h5_room/yi.png" >
@@ -312,13 +335,13 @@
                     打开<span>一直播APP</span>，观看更多有趣直播&nbsp;&nbsp;<span class="arrow"></span>
                 </div>
             </div>
-        </div>
+        </a>
         <div class="player-lock" style="display:none"></div>
-        <div class="lucky-money" style="display:none">
+        <div class="leadReece" style="display:none">
             <div class="close"></div>
             <figure><img src="../static/img/h5_room/lucky-money.png" alt=""></figure>
             <p>打开一直播客户端<br/>有可能抢到主播间红包哦</p> 
-            <div class="openapp enter_room">去看看</div><div class="openapp-bg"></div>
+            <a id="enter_room" class="openapp">去看看</a><div class="openapp-bg"></div>
         </div>
 
         <div class="guide-pay" style="display:none">
@@ -332,7 +355,7 @@
                 <p>登录后才能操作哦</p> 
                 <div class="btn ok">去登录</div>
                 <div class="btn cancel">取消</div>
-                <div class="login-close"></div>
+                <div class="close"></div>
             </div>
         </div>
 <script>
@@ -348,25 +371,40 @@
             "scid":"<{$liveinfo.scid}>",
             "status":"<{$liveinfo.status}>",
             "memberid":"<{$liveinfo.memberid}>",
-            "unq_member_key":"<{$unq_member_key}>"
+            "showtype":"<{$liveinfo.showtype}>",
+            "unq_member_key":"<{$unq_member_key}>",
+            "vscreen":"<{$liveinfo.vscreen}>"
         },
         url:{
             "send_live_comment":"/www/live/send_live_comment",
             "buy_gift_h5":"/gift/h5api/buy_gift_h5",
             "get_my_wallet":"/member/h5api/get_my_wallet",
-            "get_gift_list_h5":"/gift/h5api/get_gift_list_h5",
+            "get_gift_list_background":"//pay.yizhibo.com/gift/api/get_gift_list_background",
             "has_follow":"/www/live/has_follow",
             "follow_friends":"/www/live/follow_friends"
+        },
+        rmzb:{
+            "appid":"<{$wb_share_appid}>",
         }
     }, user = {};
 </script>
 <script src="../static/js/main.js"></script>
 <script src="../static/js/config.js"></script>
 <script src="../static/js/share.tpl.js"></script>
+<script src="../static/libjs/jszip.min.js"></script>
+<script src="../static/libjs/gift.min.js"></script>
 <script src="../static/js/temp.js"></script>
 <script src="../static/js/gift.js"></script>
 <script src="../static/js/chat.js"></script>
 <script src="../static/js/init.js"></script>
 <script src="//a.yzbo.tv/scripts/dist/mlink.min.js"></script>
+<script src="//static.yizhibo.com/js/common/yxa.min.js"></script>
+<script>
+    _yxt.push("task_pv",{     //PV埋点
+        pf: "yzb",
+        typ:"sh",
+        tpc: "yzb.pv"
+    });
+</script>
 </body>
 </html>
