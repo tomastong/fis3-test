@@ -5,8 +5,10 @@
         gifttemp : {},
         giftcache:function(){
             var that = this, d = {};
+            var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+            $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
             $.ajax({  
-                url:shareConfig.url.get_gift_list_background,  
+                url:'//'+prefix+'pay.yizhibo.com'+shareConfig.url.get_gift_list_background+'?scid='+shareConfig.sObj.scid+'&memberid='+user.memberid,  
                 type: "get",  
                 async: false,  
                 dataType: "jsonp",  
@@ -15,6 +17,8 @@
 
             }).done(function(data) {
                 // var i = 0;
+                data.data.nodisplay.map(function(item, i) {
+                    d['gift'+item.giftid] = item; });
                 data.data.list.map(function(item, i) {
                     d['gift'+item.giftid] = item; 
 
@@ -46,6 +50,8 @@
             }).done(function(data) {
                 if (data.result != 1) return;
                 user = data.data;
+                $('#video-box .useravatar img').attr('src', user.avatar);
+                $('#video-box .nickname').text( user.nickname);
                 $(".recharge").html("<span>充值&nbsp;&nbsp;</span>" + user.goldcoin + "金币&nbsp;&nbsp;&gt;");
             }).fail(function() {
                 console.log("loading user error.");

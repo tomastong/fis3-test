@@ -6,21 +6,20 @@
         socket: null,
         view : new render(),
         submit: function() {
-            var content = $('#content').val();
+            var content = $('.cinput input').val();
             var ip = '', that = this;
             if (content != '') {
                 $.ajax({
                     url: shareConfig.url.send_live_comment,
                     type: 'post',
                     async: 'false',
-                    data: {'scid': shareConfig.sObj.scid,'createip': ip,'comment': content},
+                    data: {'scid': shareConfig.sObj.scid,'is_carousel':!!shareConfig.sObj.carouselid,'createip': ip,'comment': content},
                     dataType: 'json',
                     success: function(data) {succfunc(data);},
-                    error: function(data) {$('#content').val('');}
+                    error: function(data) {$('.cinput input').val('');}
                 })
             }
             function succfunc(data){
-                $('.input').blur();
                 if (data.result != 600) {
                     var comment = {
                         'avatar':user.avatar,
@@ -30,11 +29,8 @@
                         'nickname':user.nickname
                     }
                     that.view.comment(JSON.stringify(comment));
-
-                    $('#content').val('');
-                    $('.wrap-menu').removeClass('switch');
-                    $('.wrap-menu > figure,.wrap-menu .send-msg').hide();
-                    $('.w-share,.w-gift').css('display', 'inline-block');
+                    $('.comment.modal').addClass('hide');
+                    $('#video-box .cinput input').val('').blur();
                 } else {
                     $('.login').show();
                     $('.login .ok').on(clickOrTouch, function(){window.location.href = data.redirect_url;});
@@ -61,7 +57,7 @@
             var that = this;
             //监听新用户登录
             this.socket.on('connect', function(data) {
-                that.socket.emit('joinRoom', shareConfig.sObj.scid);
+                that.socket.emit('joinRoom', shareConfig.sObj.carouselid || shareConfig.sObj.scid);
                 // console.log('connect success.');
             });
             //监听消息发送
@@ -87,6 +83,9 @@
             });
             that.socket.on('message', function(data) {
                 that.view.message(data);
+            });
+            that.socket.on('queuing_show', function(data) {
+                that.view.queuing_show(data);
             });
             //监听用户退出
             that.socket.on('disconnect', function(o) {

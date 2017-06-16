@@ -3,6 +3,11 @@ var render = function() {
         staytime = 1000,
         boomtime = 300; // 进场礼物队列
 
+    var current_anchor = {  // 定义当前主播
+        'scid' : shareConfig.sObj.scid,
+        'memberid' : shareConfig.sObj.memberid
+    };    
+
     function pushGift(data) {
         if (!data) return;
 
@@ -43,10 +48,10 @@ var render = function() {
             }
         }
         else if(data.childtype == "1"){////豪华礼物 
-            // if($("#J_luxury").is(".hide"))
-            //     animateGift(data, 2);
-            // else
-            //     _giftluxury.push(data);
+            if($("#J_luxury").is(".hide"))
+                animateGift(data, 2);
+            else
+                _giftluxury.push(data);
         }else if(data.childtype == "0"){   //  普通礼物，不是执行，就是压入栈
             var d = $(".left-side-cartoon > .hide");
             if(d.length > 0){
@@ -66,14 +71,14 @@ var render = function() {
                     console.log('没有找到礼物');
                     return;
                 }
-                $("#J_luxury").removeClass('hide').show().html('');
+                $("#J_luxury").removeClass('hide').html('');
                 if(canvasgift.support)  // true（支持）false(不支持)
                 {
                     var canvas = $("#J_luxury canvas")[0];
                     if(!canvas)
-                        $("#J_luxury").append('<canvas style = "width:'+parseInt($(window).height()/640*360)+'px; height:'+$(window).height()+'px"></canvas>');
+                        $("#J_luxury").append('<canvas style = "width:'+$(window).width()+'px; height:'+parseInt($(window).width()/360*640)+'px"></canvas>');
                     $('.gifter figure img').attr('src', data.avatar);
-                    $('.gifter figure .rank').addClass('r-'+data.level);
+                    $('.gifter .rank').addClass('r-'+data.level);
                     $('.gifter .info .nickname').text(data.nickname);
                     $('.gifter').fadeIn(100);
                     canvas = $("#J_luxury canvas")[0];
@@ -154,13 +159,19 @@ var render = function() {
     var div = $("#message");
     var list = $("#list-info");
     this.login = function(data){
-        var login  =  $.parseJSON(data)[0];
+        var login  =  $.parseJSON(data)[0], online = '';
         if(!login || !login.nickname) return;
         login.level = Math.max(1,login.level);
         list.append(template("login",login));
         for(var i=0;i<$("li", list).length-50;i++){
                 $("li", list).eq(i).remove();
         }
+        if(login.online>9999)
+            online = (login.online/10000).toFixed(2)+'万';
+        else
+            online = login.online;
+        $('.user-info .item dd').text(online+'人');
+
         autoscroll();
     }
     this.gift = function(data){
@@ -202,13 +213,51 @@ var render = function() {
     }
     this.live_info = function(data){
         var obj = $.parseJSON(data);
-        if(!obj) return;
+        if(obj && (obj.status ==1 || obj.status ==2))
+            $('.liveend').removeClass('hide');
         // if(!obj.goldcoins) return;
         // $(".gold-coin .goldcoins").html(obj.goldcoins);
         // $(".gold-coin").is(":hidden")?$(".gold-coin").show():'';
     }
+    this.queuing_show = function(data){
+        var obj = $.parseJSON(data);
+        if(obj && obj.type == 3 && !obj.next_scid) {
+            $('.lunmaigd').removeClass('hide');
+            return;
+        }
+        if(obj && obj.type == 3 && current_anchor.scid == obj.next_scid)  return;
+
+        $.getJSON('http://test.m.yizhibo.com/www/mobile/get_play_live?scid=xhM5agNgmtNC_0kZ',function(d){     
+            $('.lunmaigd').removeClass('hide');
+            current_anchor.playurl = d.linkurl;
+            $('#video-box video').attr('src', current_anchor.playurl);
+        })
+
+        $('#video-box video')[0].addEventListener('loadstart canplay canplaythrough', function(){
+            $('#video-box video')[0].play();
+            update_anchor(obj);
+            $('.lunmaigd').addClass('hide');
+        });
+
+        function update_anchor(data){   // 更新轮麦主播信息
+            current_anchor.scid = obj.next_scid;
+            current_anchor.memberid = obj.next_member_id;
+            current_anchor.nickname = obj.nickname;
+            current_anchor.avatar = obj.avatar;
+            current_anchor.queuing_room_scid = obj.queuing_room_scid;    
+
+            //更新shareConfig对象
+            shareConfig.sObj.scid = current_anchor.scid;
+            shareConfig.sObj.memberid = current_anchor.memberid;
+
+            $('.user-info .avatar img, .user_avatar img').attr('src', current_anchor.avatar);
+            $('.user-info .item dt, .user_desc dt').text(current_anchor.nickname);
+        }
+    }
+
     function autoscroll(){
         div.scrollTop(20000);
     }
+
 }
    

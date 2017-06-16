@@ -1,4 +1,4 @@
-/*TMODJS:{"version":2,"md5":"7409b1637604120d622abfe58b5bb825"}*/
+/*TMODJS:{"version":1,"md5":"7409b1637604120d622abfe58b5bb825"}*/
 template('messagex',function($data,$filename
 /**/) {
 'use strict';var $utils=this,$helpers=$utils.$helpers,$escape=$utils.$escape,level=$data.level,nickname=$data.nickname,message=$data.message,suffix=$data.suffix,$out='';$out+='<li class="room-chat-item"> <div class="gift"> <div class="wrap-enter"> <span class="rank r-';

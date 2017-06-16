@@ -24,7 +24,11 @@
         <img src="./../static/img/h5_room/shadow.png" class="shadow" style="position:absolute;width:100%;display:none;margin:0 auto;z-index: 999;">
     </div>
     <div id="rt-share">
-        <img src="./../static/img/h5_room/rt-share.png" style="width:100%;">
+        <figure><img src="https://alcdn.img.xiaoka.tv/20170318/663/cba/31145325/663cba220a2f418fc1ac1ad09b975b41.jpg" alt=""></figure>
+        <dl>
+            <dt>点击右上角... 进行分享</dt>
+            <dd><span>大城市宝宝...</span>感谢你哦</dd>
+        </dl>
     </div>
         <{if $liveinfo.status==1}>
         <section class="live-end">
@@ -117,8 +121,11 @@
             </section>
             <section class="yizhibo-logo">
                 <div class="yizhibo-logo-ctn">
-                    <!-- <span>一直播 ID：</span><span><{$liveinfo.memberid}></span> -->
+                    <{if $liveinfo.carouselid != ""}>
+                    <span><{$data.carousel_memberid}></span>
+                    <{else}>
                     <span><{$liveinfo.watermark_text}></span>
+                    <{/if}>
                 </div>
             </section>
             <div class="live-starttime"><{$liveinfo.starttime|date_format:" %Y.%m.%d"}></div>
@@ -167,23 +174,26 @@
             
             <section class="btm-menu">
                 <div class="wrap-menu">
-                <{if $liveinfo.status==10}>
                     <div class="w-input ">
-                        <input class="input" id="content" type="text" placeholder="说点什么吧...">
+                        <!-- add function -->
+                        <div class="placeholder"></div>
+                        <figure class="plicon"></figure>
+                        <input class="input" id="content" type="text" readonly="true" placeholder="说点什么吧...">
                     </div>
-                <{elseif $liveinfo.status==11}>
-                    <div class="input-block">
-                    </div>
-                <{else}>
-                <{/if}>
-                    <figure class="cut"></figure>
-                    <span class="send-msg">发送</span>
                     <div class="w-share">
                     <{if $liveinfo.vscreen==1}>
                         <figure class="vs-share"><img src="../static/img/h5_room/share.png"></figure>
                     <{else}>
                         <figure class="ls-share"><img src="../static/img/h5_room/ls-share.png"></figure>
                     <{/if}>
+                    </div>
+                    <!-- add function -->
+                    <div class="sgift">
+
+                        <figure>
+                            <canvas id="sgift" width="116" height="116" style="width: 100%;height: 100%;"></canvas>
+                            <img src="" alt="">
+                        </figure>
                     </div>
                     <div class="w-gift">
                         <figure><img src="../static/img/h5_room/gift.png" alt=""></figure>
@@ -224,9 +234,8 @@
                 <button class="btn send disabled">发送</button>
                 <div class="big-bg" style="display:none">
                     <div class="lx-click">
-                        <div class="lx-send"><i>连击</i>
-                            <p><i>30</i></p>
-                        </div>
+                        <!-- add function -->
+                        <canvas id="canvas" width="116" height="116">你的浏览器不支持canvas</canvas>
                     </div>
                     <div class="send66 num">66</div>
                     <div class="send520 num">520</div>
@@ -259,6 +268,23 @@
                 </dl>
             <a id="enter_room" class="enter_live_room">进入直播间</a>
             </section>
+            
+            <!-- add function -->
+            <div class="comment modal hide">
+                <figure class="useravatar"><img src="https://alcdn.img.xiaoka.tv/20170318/663/cba/31145325/663cba220a2f418fc1ac1ad09b975b41.jpg" alt=""></figure>
+                <span class="nickname">系咪Cici</span>
+                <hr>
+                <div class="cinput"><input type="text"></div>
+                <div class="send-msg">发送</div>
+            </div>
+            <div class="lunmaigd hide">
+                <div class="placeholder" style="height: 100%"></div>
+                <p>主播正在赶来</p>
+            </div>
+            <div class="liveend hide">
+                <div class="placeholder" style="height: 100%"></div>
+                <p>直播已经结束</p>
+            </div>
         </figure>
         <{else}>
         <{/if}>    
@@ -325,23 +351,34 @@
         </ul>
         <{/if}> 
         <div class="assist"></div>
-        <a id="btnOpenApp" class="footer">
-            <div class="footer-wrap">
-                <figure>
-                    <img src="../static/img/h5_room/yi.png" >
-                </figure>
-                
-                <div class="title">
-                    打开<span>一直播APP</span>，观看更多有趣直播&nbsp;&nbsp;<span class="arrow"></span>
-                </div>
-            </div>
-        </a>
+        <!-- add function -->
+        <div class="footer doc-footer-wrapper">
+            <ul class="scroll-image-wrapper">
+                <li class="active"><img src="../static/img/h5_room/yizhibolb.png" alt=""></li>
+                <li><img src="" alt=""></li>
+                <li><img src="" alt=""></li>
+                <li><img src="" alt=""></li>
+            </ul>
+            <ul class="scroll-title-wrapper">
+                <li class="current"><a href="">更多精彩就在一直播~</a></li>
+                <li class="title"><a href=""></a></li>
+                <li class="title"><a href=""></a></li>
+                <li class="title"><a href=""></a></li>
+            </ul>
+            <ul class="scroll-panel clearfix">
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            <a class="openapp" id="btnOpenApp" style="text-decoration: none;"><div>打开</div></a>
+        </div>
         <div class="player-lock" style="display:none"></div>
+        <!-- add function -->
         <div class="leadReece" style="display:none">
             <div class="close"></div>
             <figure><img src="../static/img/h5_room/lucky-money.png" alt=""></figure>
-            <p>打开一直播客户端<br/>有可能抢到主播间红包哦</p> 
-            <a id="enter_room" class="openapp">去看看</a><div class="openapp-bg"></div>
+            <a class="openapp" id="btnOpenApp" style="text-decoration: none;"></a>
         </div>
 
         <div class="guide-pay" style="display:none">
@@ -373,15 +410,17 @@
             "memberid":"<{$liveinfo.memberid}>",
             "showtype":"<{$liveinfo.showtype}>",
             "unq_member_key":"<{$unq_member_key}>",
-            "vscreen":"<{$liveinfo.vscreen}>"
+            "vscreen":"<{$liveinfo.vscreen}>",
+            "carouselid":"<{$liveinfo.carouselid}>"
         },
         url:{
             "send_live_comment":"/www/live/send_live_comment",
             "buy_gift_h5":"/gift/h5api/buy_gift_h5",
             "get_my_wallet":"/member/h5api/get_my_wallet",
-            "get_gift_list_background":"//pay.yizhibo.com/gift/api/get_gift_list_background",
+            "get_gift_list_background":"/gift/api/get_gift_list_background",
             "has_follow":"/www/live/has_follow",
-            "follow_friends":"/www/live/follow_friends"
+            "follow_friends":"/www/live/follow_friends",
+            "get_user_panel_gift_background":"/gift/api/get_user_panel_gift_background"
         },
         rmzb:{
             "appid":"<{$wb_share_appid}>",
