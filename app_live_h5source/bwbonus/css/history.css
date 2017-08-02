@@ -1,0 +1,136 @@
+* {
+  margin: 0 0;
+  padding: 0 0;
+  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, STHeiTi;
+}
+* {
+  -webkit-overflow-scrolling: touch;
+}
+html {
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+}
+body {
+  -webkit-touch-callout: none;
+  -moz-touch-callout: none;
+  -ms-touch-callout: none;
+  -o-touch-callout: none;
+  touch-callout: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+body,
+div,
+a,
+span,
+ul,
+li,
+img,
+div:after,
+div:before,
+a:after,
+a:before,
+span:after,
+span:before,
+ul:after,
+ul:before,
+li:after,
+li:before,
+img:after,
+img:before {
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -ms-touch-action: none;
+  -moz-user-select: -moz-none;
+  -webkit-overflow-scrolling: touch;
+}
+body {
+  font-family: 'PingFangSC';
+  background-color: #070030;
+}
+body .wrapper {
+  position: relative;
+  margin: 0 auto;
+  padding: 0 0.4rem;
+}
+body .wrapper .ts {
+  margin-top: 0.533333rem !important;
+}
+body .wrapper .item {
+  position: relative;
+  height: 1.866667rem;
+  margin: 0 0.466667rem;
+}
+body .wrapper .item .date {
+  color: #31c7ff;
+  font-size: 0.533333rem;
+}
+body .wrapper .item dd {
+  margin-top: 0.24rem;
+}
+body .wrapper .item dd .duration {
+  margin-right: 0.533333rem;
+}
+body .wrapper .item dd span {
+  font-size: 0.32rem;
+  color: #fff;
+}
+body .wrapper .item .btn {
+  position: absolute;
+  right: 0.466667rem;
+  top: 0.533333rem;
+  width: 2.186667rem;
+  height: 0.84rem;
+}
+body .wrapper .item .ok {
+  background: url(../img/ok.png) no-repeat;
+  background-size: 100%;
+}
+body .wrapper .item .nok {
+  background: url(../img/nok.png) no-repeat;
+  background-size: 100%;
+}
+body .wrapper .cut {
+  margin: 0 -0.466667rem;
+  height: 1px;
+  background-color: #2911b6;
+}
+body .wrapper .back {
+  height: 1.26rem;
+  background-color: rgba(0, 0, 0, 0.65);
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+  line-height: 1.26rem;
+  color: #fff;
+  font-size: .48rem;
+  margin: 0 -0.4rem;
+}
+body .vertical {
+  font-size: 0;
+}
+body .vertical .placeholder {
+  display: inline-block;
+  width: 0;
+  min-height: inherit;
+  height: inherit;
+  vertical-align: middle;
+  visibility: hidden;
+  overflow: hidden;
+}
+body .vertical .vitem {
+  display: inline-block;
+  vertical-align: middle;
+}
+body .hide {
+  display: none !important;
+}

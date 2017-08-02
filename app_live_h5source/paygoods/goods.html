@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title></title>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./css/goods.css">
+    <script src="./js/flexible.0.3.4.js"></script>
+    <script src="./js/zepto.js"></script>
+    <script src="./js/fastclick.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <section class="copyheader hide">
+        <div class="cheader">
+            <span class="date desc"></span>
+            <span class="time desc"></span>
+            <span class="subscribe desc linefeed"></span>
+            <div class="btn book"></div>
+        </div>
+        <figure class="border"></figure>
+    </section>
+    <section class="header">
+        <h2></h2>
+        <p>
+            <span class="date desc"></span>
+            <span class="time desc"></span>
+            <span class="subscribe desc"></span>
+        </p>
+        <div class="tag">
+        </div>
+        <div class="btn book"></div>
+    </section>
+    <section class="content">
+        <figure class="cover"><img src=""></figure>
+        <div class="bloger vertical">
+            <div class="placeholder"></div>
+            <figure class="vitem"><img src="" alt=""></figure>
+            <dl class="vitem">
+                <dt></dt>
+                <dd>
+                    <span class="udesc">
+                        <div class="placeholder"></div>
+                        <span class="doyen vitem"></span>
+                        <span class="desc vitem"></span>
+                    </span>
+                </dd>
+            </dl>
+            <div class="follow vitem">关注</div> 
+        </div>
+        <div class="intro">
+            <p></p>
+            <figure class="cut"></figure>
+            <div class="contentintro">内容简介</div>
+            <p></p>
+        </div>
+    </section>
+    <section class="toast">
+        <p>订阅成功</p>
+    </section>
+</div>
+<div class="modal hide"></div>
+<div class="iosorder-wrap hide">
+    <div class="iosorder">
+        <h2></h2>
+        <figure class="cut"></figure>
+        <div class="item vertical">
+            <div class="all vitem">支付总计</div>
+            <div class="coins vitem"><span class="num"></span><span class="unit">金币</span></div>
+        </div>
+        <div class="btn pay">立即支付</div>
+        <p class="balance">金币余额：<span class="money">1069688</span></p>
+    </div>  
+</div>
+<div class="iossuccess-wrap hide">
+    <div class="iossuccess">
+        <figure class="ioscheck"><img src="./img/ioscheck.png" alt=""></figure>
+        <p class="result">购买成功</p>
+        <p class="desc">您已经买的[ <span class="title"></span>] 将在<span class="date"></span> 开播，开
+    播前一直播会提醒你，记得开启推送
+    通知哦！</p>
+        <div class="btn know">知道了</div>
+    </div>
+</div>
+<script>
+    (function(win, $){
+        FastClick.attach(document.body);
+
+        var sUserAgent = window.navigator.userAgent.toLowerCase(),
+            ios = /iphone|ipad|ipod/.test(sUserAgent),
+            android = /android/.test(sUserAgent);
+        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+
+        $(function(){
+            login('/member/h5api/login_by_secdata').then(function(data, status, x){
+                return Promise.resolve($.ajax({
+                    url:'/live/h5api/prevue_detail',
+                    type:'post',
+                    data:{'scid':url.scid},
+                    dataType:'json'
+                }));
+            }).then(function(d){
+                if(d.result != 1) return Promise.reject(new Error('内容请求不成功'));
+                $('.header').data('productid',d.data.product_id).data('producttype',d.data.live_product_type);
+                $('.header h2, .iosorder h2, .iossuccess .desc .title').text(d.data.title);
+                $('.header .date, .cheader .date, .iossuccess .desc .date').text(d.data.live_start_time);
+                $('.header .time, .cheader .time').text(d.data.duration_str);
+                $('.header .subscribe, .cheader .subscribe').text(d.data.subscribe_number+'人订阅');
+                if(d.data.login_member_id == d.data.member_id){
+                    $('.header .book, .cheader .book').addClass('hide');
+                    $('.bloger .follow').addClass('hide');
+                }
+
+                if(d.data.price>0){   
+                    $('.header .book, .cheader .book').text(d.data.price+'金币预定').data('price', d.data.price);
+                    $('.iosorder .coins .num').text(d.data.price);
+                }
+                else{
+                    $('.header .book, .cheader .book').text('订阅预告').data('price', 0);
+                }
+                
+                $('.cover img').attr('src', d.data.cover.replace(/@.+\.webp/, ''));
+                $('.bloger figure img').attr('src',d.data.avatar);
+                $('.intro p').eq(0).text(d.data.member_desc);
+                $('.intro p').eq(1).text(d.data.prevue_desc);
+                if(d.data.is_focus == 1) $('.bloger .follow').text('已关注').addClass('disabled');
+                if(d.data.yzb_master_vt == 0) $('.bloger .doyen').addClass('hide');
+                $('.bloger .desc').text(d.data.yzb_master_type);
+                if(d.data.is_subscribe && d.data.price>0) {
+                    $('.header .book, .cheader .book').text('已购买').addClass('booked').css({'opacity':.5});
+                }else if(d.data.is_subscribe && d.data.price == 0){
+                    $('.header .book, .cheader .book').text('已订阅').addClass('booked').css({'opacity':.5});
+                }
+                $('.bloger dl dt').text(d.data.nickname).data('memberid',d.data.member_id).data('usermemberid',d.data.login_member_id);
+
+
+                d.data.tag.forEach(function(v, i){
+                    $('.header .tag, .cheader .tag').append('<span data-tag='+v.category_id+'>'+v.name+'</span>');
+                });
+                // 初始化Dom后，进行一些操作
+                adsorption();
+
+                // 判断是否可以购买直播预告
+                if(d.data.live_status == 10 || d.data.live_status == 11)
+                    $('.header .book, .cheader .book').addClass('jumplive');
+                else if(d.data.can_buy == 0)
+                    $('.header .book, .cheader .book').addClass('disabled').css({'opacity':.5});
+
+                return Promise.resolve({'bind':'绑定事件'});
+            }).then(function(data){
+                // 执行绑定事件， 以示模块区分
+                if(url.secdata){
+
+                    $(document).on('tap', '.bloger figure', function(e){
+                        var e = e || window.Event;
+                        e.stopPropagation();
+                        location.href= 'xktv://jump?type=3&dataStr='+$('.bloger dl dt').data('memberid');
+                    });
+                }else{
+                    magicWindow($('.bloger dl dt').data('memberid'));
+                }
+
+                $(document).on('touchend', '.bloger .follow', function(e) {
+                    var e = e || window.Event;
+                    e.stopPropagation();
+                    if($(this).hasClass('disabled')) return;
+                    var xhr = $.ajax({
+                        url: '/member/h5api/follow_friends',
+                        type: 'post',
+                        async: 'false',
+                        data: {
+                            'friendid': $('.bloger dl dt').data('memberid')
+                        },
+                        dataType: "json"
+                    });
+                    xhr.done(function(data) {
+                        if (data.result == 600) {
+                            location.href='//'+prefix+'m.yizhibo.com/www/live/login?redirect_url='
+                                        +window.location.href;
+                        } else {
+                            $(".bloger .follow").text('已关注').addClass('disabled');
+                        }
+                    });
+                    xhr.fail(function(xhr, errorType, error) {
+                        console.log('error code:', errorType);
+                        $('.toast p').text('关注失败');
+                        $('.toast').animate({'opacity':1},100, function(){setTimeout(function(){$('.toast').animate({'opacity':0},100)}, 1000)})
+                    })
+                })
+
+                $(document).on('touchend', '.header .book, .cheader .book', function(e){
+                    var e = e || window.Event;
+                    e.stopPropagation();
+                    if($(this).hasClass('booked') || $(this).hasClass('disabled')) return;
+                    if($(this).hasClass('jumplive')){
+                        if(url.secdata)
+                            location.href = 'xktv://jump?type=1&dataStr='+url.scid;
+                        else
+                            magicLive(url.scid);
+
+                        return;
+                    }
+                    if($(this).data('price')>0){
+                        if(ios && url.secdata){
+                            $('.iosorder-wrap').removeClass('hide').addClass('fadein');
+                            $('.modal').removeClass('hide');
+                        }
+                        else
+                            location.href = './rmbpay.html?scid='+url.scid+'&secdata='+url.secdata;
+
+                        return;
+                    }
+                    var xhr = $.ajax({
+                        url:'/live/h5api/subscribe_prevue',
+                        type:'post',
+                        data:{'scid': url.scid},
+                        dataType: "json"
+                    });
+                    xhr.done(function(data){
+                        if(data.result != 1) {
+                            $('.toast p').text('订阅失败');
+                            $('.toast').animate({'opacity':1},100, function(){setTimeout(function(){$('.toast').animate({'opacity':0},100)}, 1000)})
+                            return ;
+                        };
+                        $('.bloger .follow').trigger('touchend');
+                        $('.header .book, .cheader .book').text('已订阅').addClass('booked').css({'opacity':.5}); 
+                        $('.toast p').text('订阅成功');
+                        $('.toast').animate({'opacity':1}, 100, function(){
+                            setTimeout(function(){
+                                $('.toast').animate({'opacity':0},100)
+                            }, 1000);
+                        })   
+                    }).fail(function(xhr, status, errorType, error){
+                        console.log('订阅失败...', error);
+                        $('.toast p').text('订阅失败');
+                        $('.toast').animate({'opacity':1},100, function(){setTimeout(function(){$('.toast').animate({'opacity':0},100)}, 1000)})
+                    })
+                })
+
+                $(document).on('touchend', '.iosorder .pay', function(e){
+                    var e = e || window.Event, 
+                        requrl = '//test.pay.yizhibo.com/payfee/api/create_prepay_goldorder_h5',
+                        type = 'coins', params = {};
+                    e.stopPropagation();
+                    // 初始化请求参数
+                    params.sellerid = $('.bloger dl dt').data('memberid');
+                    params.realprice = $('.header .btn').data('price');
+                    params.scid = url.scid;
+                    params.secdata = url.secdata;
+                    params.productid = $('.header').data('productid');
+                    params.liveproducttype = $('.header').data('producttype');
+
+                    // 安卓里外、ios外充值需要跳转，iOS内金币充值的时候不需要以下这个字段
+                    // params.ptype = '17';
+
+                    var xhr = $.ajax({
+                        url:requrl,
+                        data:params,  
+                        type: 'get',  
+                        async: false,  
+                        dataType: 'jsonp',  
+                        jsonp: 'callback',
+                        jsonpCallback: 'return_callback'
+                    });
+                    xhr.done(function(data){
+                        if(data.result != 1) return ;
+                        $('.wrapper, .iossuccess-wrap').removeClass('hide');
+                        $('.iosorder-wrap').addClass('hide').removeClass('fadein');
+                        $('.modal').addClass('hide');
+                    });
+                    xhr.fail(function(xhr, errorType, error){
+                        console.log('支付金币失败..', error);
+                    })
+
+                })
+
+                return Promise.resolve({'wallet':'获取钱包'});
+                
+
+            }).then(function(data){
+                // 执行获取钱包代码
+                $.getJSON('/member/h5api/get_my_wallet', function(data){
+                    if(data.result != 1) return;
+
+                    window.user = data.data;
+                    if(user.goldcoin < $('.header .book').data('price'))
+                        $('.iosorder .pay').text('金币不足，立即充值').addClass('recharge disabled');
+                    $('.balance .money').text(user.goldcoin);
+                })
+            }).catch(function(error) {
+                // 处理前一个回调函数运行时发生的错误
+                console.log('发生错误！', error);
+            });
+
+            function adsorption(){
+                var height = Math.floor(parseFloat(getStyle($('.header').get(0),'height')))+1,
+                    title = document.title, flag = false;
+                $(window).scroll(function(){
+                    if($('body').scrollTop()>height && !flag){
+                        $('.copyheader').removeClass('hide');
+                        document.title = $('.header h2').text();
+                        flag = true;
+                    }
+                    else if($('body').scrollTop()<height && flag){
+                        $('.header').removeClass('hide');
+                        $('.copyheader').addClass('hide');
+                        document.title = title;
+                        flag = false;
+                    }
+
+                })
+            };
+
+            $(document).on('touchend', '.pay.recharge', function(e){
+                var e = e || window.Event;
+                e.stopPropagation();
+
+                location.href='xktv://jump?type=14';
+            })
+
+            
+
+            $(document).on('touchend', '.iossuccess .know', function(e){
+                var e = e || window.Event;
+                e.stopPropagation();
+
+                window.location.reload();
+            });
+
+            $(document).on('touchend', '.tag span', function(e){
+                var e = e || window.Event;
+                e.stopPropagation();
+
+                var o = window.YXLiveObject && window.YXLiveObject.postMessage;
+                if (o) {
+                    window.YXLiveObject.postMessage({
+                        name: 'enter_trailer',
+                        params: {'specialId':$(this).data('tag')}
+                    });
+                } else {}
+            });
+
+            $(document).on('touchend', '.modal', function(e){
+                var e = e || window.Event;
+                e.stopPropagation();
+
+                $('.modal').addClass('hide');
+                $('.iosorder-wrap').addClass('hide').removeClass('fadein');
+            })
+            
+        });
+
+        // 定义登录函数
+        var login = function(requrl){
+            return Promise.resolve($.ajax({
+                    url:requrl,
+                    type:'post',
+                    data:{'sec_data':url.secdata},
+                    dataType:'json'
+            }));
+        };
+        
+        var url = (function(){
+            var get  = location.search.slice(1), url = {};
+            get = get.split(/[?&]/);
+            get.forEach(function(v, i){
+                v = v.split('=');
+                if(v.length<2) return ;
+                url[v[0]] = v[1];
+            })
+            return url;
+        })();
+
+        function getStyle(obj,attr){
+           if(obj.currentStyle)
+               return obj.currentStyle[attr];
+
+           return getComputedStyle(obj)[attr];
+        }
+
+    })(window, typeof Zepto == 'undefined'? jQuery : Zepto);
+</script>
+<script src="//a.yzbo.tv/scripts/dist/mlink.min.js"></script>
+<script>
+    function magicWindow(memberid){
+        new Mlink({
+            mlink : 'https://a.yzbo.tv/AAaC?type=3&dataStr='+ memberid,
+            button : document.querySelectorAll('.bloger figure'),
+            autoRedirect : false,
+            autoRedirectToDownloadUrl: true,
+            downloadWhenUniversalLinkFailed: false
+        });
+    }
+    function magicLive(scid){
+        new Mlink({
+            mlink : 'https://a.yzbo.tv/AAAj?type=1&dataStr='+scid,
+            button : document.querySelectorAll('.book'),
+            autoRedirect : false,
+            autoRedirectToDownloadUrl: true,
+            downloadWhenUniversalLinkFailed: false
+        });
+    }
+</script>
+</body>
+</html>

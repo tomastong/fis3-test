@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title>一直播游戏主播招募</title>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./css/bwbonus.css">
+    <script src="./js/flexible.0.3.4.js"></script>
+    <script src="./js/zepto.js"></script>
+    <script src="./js/touch.js"></script>
+    <script src="./js/fastclick.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <div class="header">
+        <div class="rulebtn"></div>
+    </div>
+    <div class="content">
+        <figure class="progressbg"><div class="progress"></div></figure>
+        <p>当前余额<span class="balance">70万</span></p>
+    </div>
+    <div class="user hide">
+        <figure class="avatar"><img src="./img/avatar.png" alt=""></figure>
+        <div class="box">
+            <div class="item"><span>用户昵称：</span><span class="nickname">实力派1234</span></div>
+            <div class="item"><span>时长：</span><span class="duration">1:26:33</span></div>
+            <div class="item"><span>预计收益：</span><span class="income">10￥</span></div>
+        </div>
+        <div class="detailbtn"></div>
+    </div>
+    <div class="footer zhansha hide">
+        <div class="downloadbtn"></div>
+    </div>
+    <div class="footer xiazai">
+        <a href=""><div class="downloadbtn"></div></a>
+    </div>
+</div>
+<script>
+    (function(win, $){
+        FastClick.attach(document.body);
+
+        var sUserAgent = window.navigator.userAgent.toLowerCase(),
+            ios = /iphone|ipad|ipod/.test(sUserAgent),
+            android = /android/.test(sUserAgent);
+        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+
+        $(function(){
+
+            if(url.from == 'zhansha'){
+                $('.footer.zhansha').removeClass('hide');
+                $('.footer.xiazai').addClass('hide');
+            }
+
+            userReward(url.secdata).then(function(data, status, x){
+                if(data.result!=1) return Promise.reject(new Error('内容请求不成功'));
+                if(url.secdata){
+                    $('.avatar img').attr('src',data.data.avatar);
+                    $('.box .nickname').text(data.data.nickname);
+                    $('.box .duration').text(data.data.online_time);
+                    $('.box .income').text(data.data.reward+'￥');
+                    if(data.data.cnt==0)    $('.detailbtn').addClass('disabled');
+                    $('.user').removeClass('hide');
+                }
+                if(data.data.balance==1000000)
+                    $('.balance').text('100万');
+                else
+                    $('.balance').text(data.data.balance+'元');
+
+                $('.progress').css({'width':data.data.balance/10000+'%'});
+
+            }).catch(function(error) {
+                // 处理前一个回调函数运行时发生的错误
+                console.log('发生错误！', error);
+            });
+            
+
+            $.getJSON('/www/download/game_tv', function(d){
+                if(d.result!=1) return;
+                $('.xiazai a').attr('href', d.data.download);
+            })
+
+            $(document).on('tap', '.rulebtn', function(e) {
+                var e = e || window.Event;
+                e.stopPropagation();
+                location.href = './activityrule.html?secdata='+(url.secdata==undefined?'':url.secdata)+'&from='+(url.from==undefined?'':url.from);
+            });
+            $(document).on('tap', '.user .detailbtn', function(e) {
+                var e = e || window.Event;
+                e.stopPropagation();
+                if($(this).hasClass('disabled')){
+                    alert('您还没有直播收益，快去开启直播吧～');
+                }else{
+                    location.href = './history.html?secdata='+url.secdata+'&from='+url.from;
+                }
+            });
+            $(document).on('tap', '.zhansha .downloadbtn', function(e) {
+                var e = e || window.Event;
+                e.stopPropagation();
+                if(ios)
+                    location.href = './zhanshaios.html?secdata='+(url.secdata==undefined?'':url.secdata)+'&from='+(url.from==undefined?'':url.from);
+                else
+                    location.href = './zhanshaandroid.html?secdata='+(url.secdata==undefined?'':url.secdata)+'&from='+(url.from==undefined?'':url.from);
+            });
+            
+        });
+
+        // 定义登录函数
+        var userReward = function(secdata){
+            return Promise.resolve($.ajax({  
+                url:'http://'+prefix+'api.yizhibo.com/game/million/get_today_reward?_secdata='+secdata,                
+                type: "get",  
+                async: false,  
+                dataType: "jsonp",  
+                jsonp: "callback",
+                jsonpCallback: "return_callback"
+
+            }));
+        };
+        
+        var url = (function(){
+            var get  = location.search.slice(1), url = {};
+            get = get.split('&');
+            get.forEach(function(v, i){
+                v = v.split('=');
+                if(v.length<2) return ;
+                url[v[0]] = v[1];
+            })
+            return url;
+        })();
+
+        function getStyle(obj,attr){
+           if(obj.currentStyle)
+               return obj.currentStyle[attr];
+
+           return getComputedStyle(obj)[attr];
+        }
+
+    })(window, typeof Zepto == 'undefined'? jQuery : Zepto);
+</script>
+</body>
+</html>

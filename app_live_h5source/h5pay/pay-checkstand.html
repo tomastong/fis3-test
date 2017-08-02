@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title>账户充值</title>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./static/css/pay.css?r=12354">
+    <link rel="stylesheet" href="./static/libcss/jquery.alerts.css">
+    <script src="./static/libjs/flexible.0.3.4.js"></script>
+    <script src="./static/libjs/template.js"></script>
+    <script src="./static/libjs/jquery-2.1.1.min.js"></script>
+    <script src="./static/libjs/jquery.cookie.js"></script>
+    <script src="./static/libjs/jquery.alerts.js"></script>
+    <script src="./static/libjs/fastclick.js"></script>
+    <style>
+        @font-face {
+            font-family: YZB-NUMBER-Regular;
+            src: url(static/font/YZB-NUMBER-Regular.otf)
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <p class="pay">充值账户:</p>
+    <div class="user dn">
+        <div class="placeholder"></div>
+        <figure class="user-avatar">
+            <img src=""/>
+            <span></span>
+        </figure>
+        <dl class="user-desc">
+            <dt></dt>
+            <dd></dd>
+        </dl>
+        <div class="switch fr v-middle">切换账户</div>
+    </div>
+
+    <div class="search dn">
+        <div class="placeholder"></div>
+        <div class="cus-sel">
+            <input type="tel" id="account" placeholder="请输入一直播 ID">
+            <span class="arrow"></span>
+        </div>
+        <div class="cache" style="display:none"></div>
+        <script id="cache" type="text/html">
+            {{each data as value i}}
+            <div class='item' data-index='{{i}}'>{{value}}<span class='delete v-middle'></span></div>
+            {{/each}}
+        </script>
+        <div class="ok fr v-middle">确认</div>
+    </div>
+
+    <p class="choose">选择充值面额:</p>
+    <div class="list">
+        
+    </div>
+    <p class="zsinfo" data-once="1">
+        <span class="big">您将兑换</span>
+        <span class="bignum"></span>
+        <span class="big">金币&nbsp;&nbsp;</span> 
+        <span class="small">赠送</span>
+        <span class="smallnum"></span>
+        <span class="small">金币</span>
+    </p>
+    <script id="coin" type="text/html">
+     {{each data as value i}}
+        <div class="item" data-productid="{{value.productid}}">
+            <div class="xnb-ctn">
+                <div class="placeholder"></div>
+                <div class="xg">
+                    <div class="xnb" data-subsidygoldcoin="{{value.subsidygoldcoin}}" data-goldcoin="{{value.goldcoin}}">{{value.goldcoin}} 金币</div>
+                </div>
+            </div>
+            <div class="rmb">¥ {{value.price}}</div>
+        </div>
+    {{/each}}
+    </script>
+    <div class="btn-pay disabled" style="cursor:pointer">
+        提交订单&nbsp;&nbsp;<span class="money">¥&nbsp;588</span>
+    </div>
+    <div class="postscript">充值如有问题请联系客服官方电话:
+        <span class="tel"><a href='tel:400-109-9100'>400-109-9100</a></span>
+    </div>
+    <div class="customize-wrap">
+        <div class="customize">
+            <div class="yicoin"></div>
+            <p class="hint">请输入你想充值的金额</p>
+            <hr>
+            <div class="customize-input-wrapper">
+                <input type="tel" data-once="1" maxlength="10" data-currvalue="-1">
+            </div>
+            <div class="unit">元</div>
+            <p class="info">您将兑换<span></span>金币</p>
+            <div class="okcustom">确认</div>
+        </div>
+    </div>
+</div>
+
+<section class="money">
+    <div class="result dn">
+        <div id="success" class="result-wrap dn">
+            <figure>
+                <img src="./static/img/pay/success.png">
+            </figure>
+            <h4>充值成功</h4>
+            <p>您已充值成功，快去支持心动的主播吧！</p>
+            <hr>
+            <h2>完成</h2>
+        </div>
+        <div id="fail" class="result-wrap dn">
+            <figure>
+                <img src="./static/img/pay/error.png">
+            </figure>
+            <h4>充值失败</h4>
+            <hr class="margintop">
+            <h2>完成</h2>
+        </div>
+    </div>
+</section>
+
+
+<script>
+    (function(win, $){
+        FastClick.attach(document.body);
+        
+        var sUserAgent = navigator.userAgent.toLowerCase(),
+            jpage = document.referrer;
+        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+        var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+
+        $(function () {
+            if(url.status=='success') $('#success, .result').show();
+            if(url.status=='fail')  $('#fail, .result').show();
+            if(!url.memberid) $('.search').show();
+            
+            (function(){
+                var params = {
+                    url:'//'+prefix+'pay.yizhibo.com/product/api/get_product_list_background',
+                    type: "get",  
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback"
+                }
+                var xhr = $.ajax(params);
+                xhr.done(function(d){
+                    var length = d.data.length;
+                    var html = template('coin',d);
+                    $('.list').append(html);
+                    $('.list').append('<div class="item zdy"><div class="xnb-ctn">自定义</div></div>')
+                    if(length % 3 != 0) 
+                        $('<div class="item hidden">&nbsp;</div>').appendTo($('.list'))
+                })
+                xhr.fail(function(xhr, t){console.log('error status: '+t)});
+
+            })()
+
+            $(document).on(clickOrTouch, ".list .item", function () {
+                if($(this).hasClass('zdy')){
+                    var memberid = $(".cus-sel input").val(), r = /^[0-9]+$/; 
+                    if(!memberid){
+                        jAlert("请输入一直播 ID", "");
+                        $(".cus-sel input").blur();
+                        return;
+                    } else if(!r.test(memberid)){
+                        jAlert("请输入正确的一直播 ID", "");
+                        $(".cus-sel input").blur();
+                        return;
+                    }else if($('.btn-pay').hasClass('disabled')){
+                        jAlert("请确认一直播 ID", "");
+                        $(".cus-sel input").blur();
+                        return;
+                    }
+                    $('.customize-wrap').show();
+                    $('.customize-input-wrapper input').focus();
+                }
+                if(($(".xnb", this).data('subsidygoldcoin')!='' 
+                    || $(".xnb", this).data('subsidygoldcoin')!= undefined) 
+                    && $('.zsinfo').data('once')==1 && YZBpay.getsubsidygoldcoin(100) > 0)
+                    {
+                        $('.zsinfo').fadeIn();
+                        $('.zsinfo').data('once', 0);
+                }
+                $(".list .item.checked").css({"color": "#f9743a"});
+                $(".list .item.checked").removeClass("checked");
+                $(this).addClass("checked").css({"color": "#fff"});
+                $('.zsinfo .bignum').text($(".xnb", this).data('goldcoin'));
+                $('.zsinfo .smallnum').text($(".xnb", this).data('subsidygoldcoin'));
+                $(".btn-pay").css({"background-color": "#F9743A"});
+                $(".btn-pay .money").html($(".rmb", this).text());
+
+            });
+            $('.customize-input-wrapper input').on('input propertychange' ,function(e){
+                var e = e || window.event;
+                e.stopPropagation();
+
+                $(this).val($(this).val().replace(/^0|[^\d]*/g,""));
+                // 超过50000不让输入
+                if($(this).val() <= 50000 && $(this).val() !== $(this).data('currvalue'))
+                    $(this).data('currvalue', $(this).val());
+                else
+                    $(this).val($(this).data('currvalue'));
+
+                if(!$(this).val() == "" && $(this).data('once') === 1)  {
+                    $('.customize .info').show().animate({'height':'.533333rem','font-size':'0.373333rem'}, 1000, function(){});
+                    $('.customize').animate({'height':'5.12rem'},1000,function(){});
+                    $(this).data('once', 0);
+                }
+                if($(this).val()=="") {
+                    $('.customize .info').animate({'height':'0','font-size':'0'}, 1000, function(){}).hide();
+                    $('.customize').animate({'height':'4.5866667rem'},1000,function(){});
+                $(this).data('once', 1);}
+                $('.customize .info span').text($(this).val()*100);
+                $('.zsinfo .bignum').text($(this).val()*100);
+                // 自定义赠送金额先写成默认100吧
+                $('.zsinfo .smallnum').text(YZBpay.getsubsidygoldcoin($(this).val()));
+
+            })
+
+            $(".wrapper .search .cus-sel input").on("focus", function () {
+                rotateArrow(0, 180);
+                $(".wrapper .search .cache").show();
+                $(this).addClass("rl-0");
+                $(".wrapper .search .cus-sel input").one("focusout", function () {
+                    rotateArrow(180, 0);
+                    $(".wrapper .search .cache").hide();
+                    $(this).removeClass("rl-0");
+                });
+            });
+            $(document).on(clickOrTouch, '#popup_overlay', function(e){
+                var e = e || window.event;
+                e.stopPropagation();
+
+                $('#popup_overlay').hide();
+                $('#popup_container').hide();
+            })
+            $(document).on(clickOrTouch, '.customize', function(e){
+                var e = e || window.event;
+                e.stopPropagation();
+            })
+            $(document).on(clickOrTouch, '.customize-wrap', function(e){
+                var e = e || window.event;
+                e.stopPropagation();
+
+                $(this).hide();
+                $('.customize-input-wrapper input').blur();
+            })
+
+            function rotateArrow(x, y) {
+                $({deg: x}).animate({deg: y}, {
+                    duration: 100,
+                    step: function (now) {
+                        $('.cus-sel .arrow').css({
+                            transform: 'rotate(' + now + 'deg)'
+                        });
+                    }
+                });
+            }
+
+            if (window.navigator.cookieEnabled) {
+                var cache = $.cookie('cache') ? $.cookie('cache'):'';
+                if(jpage.indexOf('yizhibo.com') > -1)
+                    $.cookie('jpage', jpage);
+                cache = cache.split(',').filter(function(item){return item.trim()!='';})
+                if(cache.length==0)
+                    $("<div class='item nothing'>没有充值记录</div>").appendTo($('.search .cache'))
+                else{
+                    var html = template('cache',{'data':cache});
+                    $('.search .cache').append(html);
+                }
+            } else 
+                jAlert("浏览器Cookie不可用");
+
+            $(document).on(clickOrTouch, ".cache .item", function () {
+                if (!$(this).is(".nothing")) 
+                    $(".wrapper .search .cus-sel input").val($(this).text());
+            });
+            $(document).on(clickOrTouch, ".cache .item .delete", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                var cache = $.cookie('cache').split(',');
+                cache = cache.filter(function(item){return item.trim()!='';})
+                cache.splice($(this).parent().data("index"), 1);
+                $.cookie('cache',cache.join(','));
+                $(".wrapper .search .cus-sel input").focus();
+                $(this).parent().remove();
+
+                if ($(".search .cache .item").length == 0) {
+                    rotateArrow(0, 180);
+                    $("<div class='item nothing'>没有充值记录</div>").appendTo($('.search .cache'))
+                }
+            });
+
+            function login(member) {
+                if (!!member && !!member.memberid) {
+                    $(".cus-sel input").blur();
+                    $(".search").css({"display": "none"});
+                    $(".user").css({"display": "block"}).addClass('show');
+                    $(".user-avatar img").attr("src", member.avatar);
+                    $(".user-desc dt").text(member.nickname);
+                    $(".user-desc dd").text("ID:" + member.memberid);
+                    $('.btn-pay').removeClass('disabled');
+                    if (member.is_v == true || member.is_v == "true") {
+                        $(".user-avatar span").attr("class", "rank doyen");
+                    } else {
+                        $(".user-avatar span").removeAttr("class");
+                    }
+                }
+            }
+
+            $(document).on(clickOrTouch, ".search .ok", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                var memberid = $(".cus-sel input").val(), r = /^[0-9]+$/;
+                
+                if(!memberid){
+                    jAlert("请输入一直播 ID", "");
+                    $(".cus-sel input").blur();
+                    return;
+                } else if(!r.test(memberid)){
+                    jAlert("请输入正确的一直播 ID", "");
+                    $(".cus-sel input").blur();
+                    return;
+                }
+
+                var xhr = $.ajax({
+                    url: '//'+prefix+'pay.yizhibo.com/login/api/get_member_background?memberid='+memberid,
+                    type: "get",  
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback"
+                });
+                xhr.done(function (data) {
+                    if (data.result != 1) { 
+                        jAlert(data.msg, ""); 
+                        $(".wrapper .search .cus-sel input").blur();
+                        return;
+                    }
+                    login(data.data);
+                    var cache = $.cookie('cache')?$.cookie('cache'):'';
+
+                    cache = cache.split(',').filter(function(item){return item.trim()!='';})
+
+                    if ($.inArray(memberid, cache) == -1) {     
+                        if(cache.length >= 6) cache.pop();
+                        cache.unshift(memberid);
+                        $.cookie('cache',cache.join(','));
+     
+                    }
+                    var html = template('cache',{'data' : cache});
+                    $(".search .cache").empty().append(html);
+                   
+                })
+                xhr.fail(function (jxhr, s) {
+                    jAlert('系统繁忙,请稍候再试!', '');
+                    $(".wrapper .search .cus-sel input").blur();
+                })
+
+            });
+
+            $(document).on(clickOrTouch, ".switch", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                $(".wrapper .search .cus-sel input").focusout();
+                $(".wrapper .search .cache").hide();
+                $(".wrapper .search .cus-sel input").val("");
+                $(".btn-pay").addClass("disabled");
+                $(".user").css({"display": "none"}).removeClass("show");
+                $(".search").css({"display": "block"});
+                $(".wrapper .search .cus-sel input").blur();
+            });
+            $(document).on(clickOrTouch, "#success h2", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                var url = $.cookie('jpage');
+                if(url =='undefined' || url == null || url == '')
+                    location.href = '//'+prefix+'m.yizhibo.com'; 
+                else
+                    location.href = url;
+            })
+            $(document).on(clickOrTouch, "#fail h2", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                $("#fail, .result").hide();
+            })
+            $(document).on(clickOrTouch, ".btn-pay", function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                var memberid = $(".cus-sel input").val(), r = /^[0-9]+$/, 
+                    productid = $('.list .item.checked').data('productid');
+                
+                if(!memberid){
+                    jAlert("请输入一直播 ID", "");
+                    $(".cus-sel input").blur();
+                    return ;
+                } else if(!r.test(memberid)){
+                    jAlert("请输入正确的一直播 ID", "");
+                    $(".cus-sel input").blur();
+                    return ;
+                }else if($('.btn-pay').hasClass('disabled')){
+                    jAlert("请确认一直播 ID", "");
+                    $(".cus-sel input").blur();
+                    return;
+                }else if($('.list .item.checked').length==0){    
+                    jAlert("请选择要充值的金额", "");
+                    $(".cus-sel input").blur();
+                    return ;
+                }else if($('.list .item.zdy').hasClass('checked')){
+                    $('.customize-wrap').show();
+                    $('.customize-input-wrapper input').focus();
+                    return;                    
+                }
+                location.href = 'pay-confirm.html?'
+                    +'memberid=' + memberid
+                    +'&productid='+productid;
+            })
+            $(document).on(clickOrTouch,'.okcustom', function(e){
+                var e = e  || window.event;
+                e.stopPropagation();
+                var memberid = $(".cus-sel input").val(), r = /^[0-9]+$/, 
+                    productid = $('.list .item.checked').data('productid');
+                
+                if(!memberid){
+                    jAlert("请输入一直播 ID", "");
+                    $('.customize-input-wrapper input').blur();
+                    return;
+                } else if(!r.test(memberid)){
+                    jAlert("请输入正确的一直播 ID", "");
+                    $('.customize-input-wrapper input').blur();
+                    return;
+                }else if($('.btn-pay').hasClass('disabled')){
+                    jAlert("请确认一直播 ID", "");
+                    $('.customize-input-wrapper input').blur();
+                    return;
+                }else if($('.customize-input-wrapper input').val() == ''){
+                    jAlert('自定义金额不能为空','');
+                    $('.customize-input-wrapper input').blur();
+                    return;
+                }else if(parseInt($('.customize-input-wrapper input').val())>50000){
+                    jAlert('自定义金额不能大于50000','');
+                    $('.customize-input-wrapper input').blur();
+                    return;
+                }
+                location.href = 'pay-confirm.html?'
+                    +'memberid=' + memberid
+                    +'&productid=998' + '&money='+$('.customize-input-wrapper input').val();
+            })
+            $(document).delegate('body', 'touchend', function(event) {
+                var o = window.YXLiveObject && window.YXLiveObject.postMessage;
+                if (o) {
+                    window.YXLiveObject.postMessage({
+                        name: 'close',
+                        params: {}
+                    });
+                } else {}
+            })
+        });
+        
+        win.onload = function(){
+            if(!url.memberid=='undefined' || !url.memberid=='') {
+                $(".cus-sel input").val(url.memberid);
+                $(".search .ok").trigger(clickOrTouch); 
+            }
+            $(".list .item").eq(1).trigger(clickOrTouch);
+        }
+
+        var url = (function(){
+            var get  = location.search.slice(1), url = {};
+            get = get.split('&');
+            get.forEach(function(v, i){
+                v = v.split('=');
+                if(v.length<2) return ;
+                url[v[0]] = v[1];
+            })
+            return url;
+        })()
+    })(window, jQuery)
+</script>
+<script src="//pay.yizhibo.com/query/api/pay_func_background"></script>
+
+</body>
+</html>

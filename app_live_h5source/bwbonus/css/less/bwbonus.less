@@ -1,0 +1,226 @@
+* {
+    margin: 0 0;
+    padding: 0 0;
+    font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, STHeiTi;
+}
+
+* {
+    -webkit-overflow-scrolling: touch;
+}
+
+html {
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+}
+
+body {
+    -webkit-touch-callout: none;
+    -moz-touch-callout: none;
+    -ms-touch-callout: none;
+    -o-touch-callout: none;
+    touch-callout: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    text-align: justify;
+    text-justify: inter-ideograph
+}
+
+body,
+div,
+a,
+span,
+ul,
+li,
+img,
+div:after,
+div:before,
+a:after,
+a:before,
+span:after,
+span:before,
+ul:after,
+ul:before,
+li:after,
+li:before,
+img:after,
+img:before {
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -ms-touch-action: none;
+    -moz-user-select: -moz-none;
+    -webkit-overflow-scrolling: touch;
+}
+body{
+    font-family: 'PingFangSC';
+    background-color: #0f0842;
+    .wrapper{
+        position: relative;
+        margin:0 auto;
+        width: 10rem;
+        .header{
+            position: relative;
+            width: 10rem;
+            height: 13.56rem;
+            background:url(../img/header.png) no-repeat;
+            background-size: 100%; 
+            .rulebtn{
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                margin: 0 auto;
+                width: 5.146667rem;
+                height: 1.133333rem;
+            }
+        }
+        .content{
+            position: relative;
+            width: 10rem;
+            height: 17.106667rem;
+            background:url(../img/content.png) no-repeat;
+            background-size: 100%; 
+            .progressbg{
+                position: absolute;
+                left: 1.106667rem;
+                bottom: 2.84rem;
+                width: 7.813333rem;
+                height: 0.88rem;
+                background: url(../img/progressbg.png) no-repeat;
+                background-size: 100%;
+                .progress{
+                    border-radius: 100px;
+                    width: 70%;
+                    height: 100%;
+                    background: url(../img/progress.png) no-repeat;
+                    background-size: auto 100%;
+                }
+            }
+            p{  
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 1.9rem;
+                margin:0 auto;
+                color: #ffde3d;
+                font-size: 0.48rem;
+                text-align: center;
+            }
+        }
+        .user{
+            position: relative;
+            width: 10rem;
+            height: 7.693333rem;
+            background:url(../img/user.png) no-repeat;
+            background-size: 100%; 
+            .avatar{
+                position: absolute;
+                width: 2.773333rem;
+                height: 2.773333rem;
+                left: 1.32rem;
+                top: 1.746667rem;
+                border-radius: 50%;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                }
+            }
+            .box{
+                position: absolute;
+                left: 4.48rem;
+                top: 2.306667rem; 
+                font-size: 0;
+            }
+            .item{
+                display: inline-block;
+                width: 4.8rem;
+                font-size: 0.4rem;
+                line-height: 1.6;
+                color: #fff;
+
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .detailbtn{
+                position: absolute;
+                top: 4.88rem;
+                left: 0;
+                right: 0;
+                margin: 0 auto; 
+                width: 4.213333rem;
+                height: 1.133333rem;
+            }
+        }
+        .zhansha{
+            position: relative;
+            width: 10rem;
+            height: 9.426667rem;
+            background:url(../img/kaibo.png) no-repeat;
+            background-size: 100%; 
+            
+            .downloadbtn{
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 2.013333rem;
+                margin: 0 auto;
+                width: 5.146667rem;
+                height: 1.133333rem;
+            }
+        }
+        .xiazai{
+            position: relative;
+            width: 10rem;
+            height: 9.426667rem;
+            background:url(../img/download.png) no-repeat;
+            background-size: 100%; 
+            
+            .downloadbtn{
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 2.013333rem;
+                margin: 0 auto;
+                width: 5.146667rem;
+                height: 1.133333rem;
+            }
+        }
+        .back{
+            height: 1.26rem;
+            background-color: rgba(0,0,0,.65);
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            text-align: center;
+            line-height: 1.26rem;
+            color: #fff;
+            font-size: .48rem;
+        }
+    }
+    .vertical {
+        font-size: 0;
+        .placeholder {
+            display: inline-block;
+            width: 0;
+            min-height: inherit;
+            height: inherit;
+            vertical-align: middle;
+            visibility: hidden;
+            overflow: hidden;
+        }
+        .vitem {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .hide {
+        display: none;
+    }
+}

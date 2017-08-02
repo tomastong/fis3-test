@@ -1,0 +1,330 @@
+* {
+    margin: 0 0;
+    padding: 0 0;
+    font-family:  Microsoft YaHei,Helvetica Neue,Helvetica,STHeiTi,Arial,sans-serif;
+}
+
+html,
+body {  
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    background-color: #f0f0f0;
+}
+
+body,
+div,
+a,
+span,
+ul,
+li,
+img {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -ms-touch-action: none;
+    -moz-user-select: -moz-none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.wrapper {
+    width: 10rem;
+    margin: auto;
+}
+
+.ctn-padding {
+    padding: 0 .266rem 0 .426rem;
+    margin-bottom: .4rem;
+    background-color: #fff;
+}
+.txt-charge{
+    padding: 0 .266rem 0 .426rem;
+    background-color: #fff;
+}
+.wrapper p {
+    font-size: 0.4rem;
+    color: #333;
+    height: 1.066rem;
+    align-items: center;
+    display: flex;
+}
+
+.wrapper .account {
+    background-color: #fff;
+    padding-bottom:.26rem;
+}
+
+.placeholder {
+    display: inline-block;
+    width: 0;
+    min-height: inherit;
+    height: inherit;
+    vertical-align: middle;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.wrapper .account figure {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 1.28rem;
+    height: 1.28rem;
+}
+
+.wrapper .account figure .doyen {
+    width: 0.32rem;
+    height: 0.32rem;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.wrapper .account figure img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.wrapper .account dl {
+    display: inline-block;
+    margin-left: .273rem;
+    font-size: 0.32rem;
+    vertical-align: middle;
+}
+
+.wrapper .account dt {
+    color: #000;
+    font-size: .453rem;
+    font-weight: 500;
+    opacity: .7;
+
+    width: 4rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.wrapper .account dd {
+    margin-top: .053rem;
+    font-size: 13px;
+    font-weight: 500;
+    color: #000000;
+    opacity: 0.54;
+}
+
+.wrapper .detail {
+    padding-left: 0.546667rem;
+    font-size: 0;
+    background-color: #fff;
+    margin-bottom: .4rem;
+}
+
+.wrapper .detail .name,
+.wrapper .detail .sum {
+    font-size: 0.4rem;
+    opacity: 0.7;
+    font-weight: 500;
+    color: #000;
+    height: 1.333rem;
+    line-height: 1.333rem;
+}
+
+.wrapper .detail .sum {
+    border-top: 1px solid #f0f0f0;
+}
+
+.wrapper .detail .sum span {
+    color: #f9743a;
+}
+
+.wrapper .detail span {
+    padding-right: .266rem;
+    float: right;
+}
+
+.wrapper .pay-channel {
+    padding-left: 0.546667rem;
+    font-size: 0;
+    background-color: #fff;
+}
+
+.wrapper .pay-channel .app {
+    position: relative;
+    height: 1.333333rem;
+}
+
+.wrapper .pay-channel div:first-child {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.wrapper .pay-channel figure,
+.wrapper .pay-channel dl,
+.wrapper .pay-channel .checked,
+.wrapper .pay-channel .unchecked {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.wrapper .pay-channel dl {
+    margin-left: 0.293333rem;
+    color: #333;
+    font-size: 0.426667rem;
+}
+
+.wrapper .pay-channel dd {
+    font-size: 0.293333rem;
+    color: #000;
+    opacity: 0.3;
+}
+
+.wrapper .pay-channel .zhifubao {
+    width: 0.76rem;
+    height: 0.6rem;
+}
+
+.wrapper .pay-channel .weixin {
+    width: 0.76rem;
+    height: 0.706667rem;
+}
+
+.wrapper .pay-channel .checked,
+.wrapper .pay-channel .unchecked {
+    float: right;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    margin-right: .266rem;
+    width: 0.533333rem;
+    height: 0.533333rem;
+}
+
+.wrapper .pay-channel .checked {
+    background: url(..//img/pay/checked.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.wrapper .pay-channel .unchecked {
+    background: url(..//img/pay/unchecked.png) no-repeat;
+    background-size: 100% 100%;
+}
+
+.wrapper .pay-channel figure img {
+    width: 100%;
+    height: 100%;
+}
+
+.wrapper .pay {
+    margin-top: 0.4rem;
+    text-align: center;
+    color: #fff;
+    border-radius: 1.626rem;
+    background-image: linear-gradient(98deg, #ff8746, #ff7756);
+    box-shadow: 0px 3px 9px rgba(255, 135, 70, 0.53);
+    font-size: .373rem;
+    height: 1.173rem;
+    line-height: 1.173rem;
+    background-color: #ff7b52;
+    justify-content: center;
+}
+.wrapper .btn-pay{
+    padding:0 .873rem;
+}
+
+.wrapper .pay .desc {
+    display: inline-block;
+    font-size: .4rem;
+}
+
+.wrapper .pay .money {
+    display: inline-block;
+    margin-left: 0.373333rem;
+    font-size: .48rem;
+}
+
+.wrapper .ps {
+    height: inherit;
+    margin: 0.4rem auto auto;
+    left: 0;
+    right: 0;
+    bottom: .4rem;
+    color: #000;
+    font-size: 0.32rem;
+    color: #999999;
+    justify-content: center;
+    text-align: center;
+}
+
+.wrapper .ps span {
+    color: #f9743a;
+    text-decoration: underline;
+}
+.wrapper .back{
+    margin-top: 1.6rem;
+    color: #f9743a;
+    text-align: center;
+    text-decoration: underline;
+}
+.backuser{
+    float: right;
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    width: 2.4rem;
+    height: .96rem;
+    line-height: .96rem;
+    justify-content: center;
+    border-radius: 1.68rem;
+    position: relative;
+    font-size: .373rem;
+    color: #f9743a;
+    text-align: center;
+    border: 1px solid #f9743a;
+}
+/*//引导充值样式///////////////////////////////*/
+.guide-pay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10rem;
+    bottom: 0;
+    z-index: 1;
+}
+.guide-pay .guide-wrap{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 10rem;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1000;   
+}
+.guide-pay figure {
+    position: relative;
+    display: none;
+    margin: 0 0 0 auto;
+    width: 100%;
+    height: 100%;
+}
+.iosmask{
+    background: url(../img/pay/iosmask.jpg) no-repeat;
+    background-size: 100%;
+}
+.androidmask{
+    background: url(../img/pay/androidmask.jpg) no-repeat;
+    background-size: 100%;
+}
+.ps span a{
+    color: #f9743a;
+    text-decoration: underline;
+}

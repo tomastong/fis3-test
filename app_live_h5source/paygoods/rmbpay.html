@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title>订单确定</title>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./css/rmbpay.css">
+    <script src="./js/flexible.0.3.4.js"></script>
+    <script src="./js/zepto.js"></script>
+    <script src="./js/fastclick.js"></script>
+</head>
+<body>
+<div class="wrapper">
+    <section class="header">
+        <p>订单详情</p>
+    </section>
+    <section class="content">
+        <div class="details">
+            <div class="item vertical">
+                <div class="placeholder"></div>
+                <div class="field vitem">直播名称</div> 
+                <div class="desc vitem title"></div>
+                <figure class="cut"></figure>
+            </div>
+            <div class="item vertical">
+                <div class="placeholder"></div>
+                <div class="field vitem">开播时间</div> 
+                <div class="desc vitem date"></div>
+                <figure class="cut"></figure>
+            </div>
+            <div class="item vertical">
+                <div class="placeholder"></div>
+                <div class="field vitem">开播时长</div> 
+                <div class="desc vitem time"></div>
+                <figure class="cut"></figure>
+            </div>
+            <div class="item vertical">
+                <div class="placeholder"></div>
+                <div class="field vitem">门票价格</div> 
+                <div class="desc vitem price"></div>
+            </div>
+        </div>
+        <div class="paychannel">
+            <div class="title">请选择支付方式</div>
+            <div class="item vertical" data-app="zfb">
+                <div class="placeholder"></div>
+                <figure class="alipay vitem"><img src="./img/alipay.png" alt=""></figure>
+                <div class="desc vitem">支付宝支付</div>
+                <figure class="zfb checked vitem"></figure>
+            </div>
+            <div class="item vertical" data-app="wx">
+                <div class="placeholder"></div>
+                <figure class="weixin vitem"><img src="./img/wx.png" alt=""></figure>
+                <div class="desc vitem">微信支付</div>
+                <figure class="wx unchecked vitem"></figure>
+            </div>
+        </div>
+    </section>
+    <section class="footer">
+        <div class="pay">立即支付</div>
+        <p class="vertical">
+            <span class="advisory vitem"></span>
+            <span class="desc vitem">付费购买即表示您已经同意</span>
+            <span class="pact vitem">《内容付费协议》</span>
+        </p>
+    </section>
+    <section class="toast">
+        <p>已取消支付</p>
+    </section>
+</div>
+<div class="wrapper-success hide">
+    <div class="main">
+        <figure class="success"><img src="./img/success.png" alt=""></figure>
+        <p class="desc">支付成功</p>
+        <p class="rmb"></p>
+        <figure class="cut"></figure>
+        <div class="item vertical">
+            <div class="placeholder"></div>
+            <div class="field vitem">直播名称</div> 
+            <div class="desc vitem title"></div>
+        </div>
+        <div class="item vertical">
+            <div class="placeholder"></div>
+            <div class="field vitem">开播时间</div> 
+            <div class="desc vitem date"></div>
+        </div>
+    </div>
+    <div class="done btn">完成</div>
+</div>
+<script>
+    (function(win, $){
+        FastClick.attach(document.body);
+
+        var sUserAgent = window.navigator.userAgent.toLowerCase(),
+            ios = /iphone|ipad|ipod/.test(sUserAgent),
+            android = /android/.test(sUserAgent);
+        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+
+        $(function(){
+            var type = 'ALIPAY_H5';
+
+            order('/live/h5api/prevue_detail').then(function(data){
+                if(data.result!=1)  return;
+                $('.header').data('productid',data.data.product_id).data('producttype',data.data.live_product_type).data('memberid',data.data.member_id);
+                $('.details .title, .wrapper-success .title').text(data.data.title);
+                $('.details .date,  .wrapper-success .date').text(data.data.live_start_time);
+                $('.details .time').text(data.data.duration_str);
+                $('.details .price').text('￥'+data.data.price/100);
+                $('.wrapper-success .rmb').text(data.data.price/100+'元').data('price',data.data.price);
+
+                if(url.status == 'success'){
+                    $('.wrapper').addClass('hide');
+                    $('.wrapper-success').removeClass('hide');
+                }
+            })
+
+            $(document).on('touchend', '.paychannel .item',function(e){
+                var e = e || window.Event;
+                e.stopPropagation();
+               if ($(this).data('app') == 'zfb' && $('.zfb').hasClass('unchecked')) {
+                    $('.wx').removeClass('checked').addClass('unchecked');
+                    $('.zfb').removeClass('unchecked').addClass('checked');
+                    type = 'ALIPAY_H5';
+                } else if ($(this).data('app') == 'wx' && $('.wx').hasClass('unchecked')) {
+                    $('.zfb').removeClass('checked').addClass('unchecked');
+                    $('.wx').removeClass('unchecked').addClass('checked');
+                    type = 'WEIXIN_H5';
+                }
+
+            });
+            
+            $(document).on('touchend', '.footer .pay',function(e){
+                var e = e || window.Event, params = {};
+                e.stopPropagation();
+                params.sellerid = $('.header').data('memberid');
+                params.realprice = $('.wrapper-success .rmb').data('price');
+                params.scid = url.scid;
+                params.secdata = url.secdata;
+                params.productid = $('.header').data('productid');
+                params.liveproducttype = $('.header').data('producttype');
+                params.ptype = $('.zfb').is('.checked') ? '17':'39';
+
+                var xhr = $.ajax({  
+                    url:'//test.pay.yizhibo.com/payfee/api/create_prepay_cashorder_h5',
+                    data:params,  // 17支付宝，39微信支付
+                    type: "get",  
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback"
+                });
+                xhr.done(function(data) {
+                    if(data.result != 1) return;
+                    document.write(data.data);
+                });
+                xhr.fail(function(xhr, errorType, error){
+                   console.log('支付人民币失败..', error);
+                })
+            });
+
+            $(document).on('touchend', '.wrapper-success .done',function(e){
+                var e = e || window.Event, params = {};
+                e.stopPropagation();
+
+                window.history.go(-1);
+            });
+
+        })
+        
+        var order = function(requrl){
+            return Promise.resolve($.ajax({
+                    url:requrl,
+                    type:'post',
+                    data:{'scid':url.scid},
+                    dataType:'json'
+                }));
+        }
+
+        var url = (function(){
+            var get  = location.search.slice(1), url = {};
+            get = get.split('&');
+            get.forEach(function(v, i){
+                v = v.split('=');
+                if(v.length<2) return ;
+                url[v[0]] = v[1];
+            })
+            return url;
+        })()
+
+        function getStyle(obj,attr){
+           if(obj.currentStyle)
+               return obj.currentStyle[attr];
+
+           return getComputedStyle(obj)[attr];
+        }
+
+    })(window, typeof Zepto == 'undefined'? jQuery : Zepto);
+</script>
+<script>
+    function paysuccess(){
+        location.href=location.href+'&status=success';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,maximum-scale=1.0,user-scalable=no">
+    <title>账户充值</title>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="./static/css/order.css?r=12354">
+    <link rel="stylesheet" href="./static/libcss/jquery.alerts.css">
+    <script src="./static/libjs/flexible.0.3.4.js"></script>
+    <script src="./static/libjs/jquery-2.1.1.min.js"></script>
+    <script src="./static/libjs/jquery.alerts.js"></script>
+    <script src="./static/libjs/fastclick.js"></script>
+    <style>
+        @font-face {
+            font-family: YZB-NUMBER-Regular;
+            src: url(static/font/YZB-NUMBER-Regular.otf)
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="guide-pay" style="display:none">
+        <figure class="android androidmask">
+        </figure>
+        <figure class="ios iosmask">
+        </figure>
+    </div>
+    <p class="txt-charge">充值账户：</p>
+    <div class="account ctn-padding">
+        <!--<div class="placeholder"></div>-->
+        <figure class="avatar"><img src="" alt="">
+            <figure class="doyen">
+                <img src="./static/img/pay/doyen.png" alt="">
+            </figure>
+        </figure>
+        <dl>
+            <dt></dt>
+            <dd class="mid" data-memberid="">ID:</dd>
+        </dl>
+        <div class="backuser">切换用户</div>
+    </div>
+    <!--<p class="ctn-padding">订单详情：</p>-->
+    <div class="detail">
+        <div class="placeholder"></div>
+        <div class="name">商品名称：<span>金币</span></div>
+        <div class="sum" data-sum="">应付金额：<span>元</span></div>
+    </div>
+    <!--<p class="ctn-padding">选择支付方式：</p>-->
+    <div class="pay-channel">
+        <div class="app" data-app="zfb">
+            <div class="placeholder"></div>
+            <figure class="zhifubao"><img src="./static/img/pay/zhifubao.png"></figure>
+            <dl>
+                <dt>支付宝支付</dt>
+                <dd>支付宝安全支付</dd>
+            </dl>
+            <figure class="zfb checked"></figure>
+        </div>
+        <div class="app" data-app="wx">
+            <div class="placeholder"></div>
+            <figure class="weixin"><img src="./static/img/pay/weixin.png"></figure>
+            <dl>
+                <dt>微信支付</dt>
+                <dd>适用于微信5.0版本以上</dd>
+            </dl>
+            <figure class="wx unchecked"></figure>
+        </div>
+    </div>
+    <div class="btn-pay">
+        <div class="pay" style="cursor:pointer">
+            <div class="placeholder"></div>
+            <span class="desc">确认支付</span><span class="money">￥</span>
+        </div>
+    </div>
+    <p class="ps">充值如有问题请联系客服官方电话: <span><a href='tel:400-109-9100'>400-109-9100</a></span></p>
+</div>
+
+<script>
+    (function(win, $){
+        FastClick.attach(document.body);
+
+        var sUserAgent = navigator.userAgent.toLowerCase(),
+            ios = /iphone|ipad|ipod/.test(sUserAgent),
+            android = /android/.test(sUserAgent),
+            weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger",
+            alipay = /alipay/.test(sUserAgent);
+        var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+        var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
+        $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
+        var type = 'ALIPAY_H5';
+        
+        $(function () {
+
+            if(android && weixin) $(".guide-pay, .guide-pay .android").show();
+            if(ios && weixin) $(".guide-pay, .guide-pay .ios").show();
+
+            (function(){
+                var params = {
+                    url: '//'+prefix+'pay.yizhibo.com/login/api/get_member_background?memberid='+url.memberid,
+                    type: "get",  
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback"
+                }, xhr;
+
+                xhr = $.ajax(params);
+                xhr.done(function(d){
+                    if(d.result!=1) return;
+                    $('.account .avatar > img').attr('src',d.data.avatar);
+                    $('.account dl dt').text(d.data.nickname);
+                    $('.account dl dd').text('ID: '+d.data.memberid);
+                    if (d.data.is_v == true || d.data.is_v == "true") {
+                        $(".account .avatar .doyen").show();
+                    } else {
+                        $(".account .avatar .doyen").hide();
+                    }
+
+                })  
+                xhr.fail(function(jqxhr, status){console.log('错误代码:'+status);});
+                if(url.productid==998){
+                    
+                    $('.detail .name span').text(url.money*100 +' 金币');
+                    $('.detail .sum span').text(url.money +' 元');
+                    $('.pay .money').text('￥'+url.money);
+
+                    return;
+                }
+
+                var dparams = {
+                    url: '//'+prefix+'pay.yizhibo.com/product/api/get_product_v2_h5?productid='+url.productid,
+                    type: "get",  
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback2"
+                }, dxhr;
+
+                dxhr = $.ajax(dparams);
+                dxhr.done(function(d){
+                    if(d.result!=1) return;
+                    $('.detail .name span').text(d.data.goldcoin +' 金币');
+                    $('.detail .sum span').text(d.data.price +' 元');
+                    $('.pay .money').text('￥'+d.data.price);
+                })  
+                dxhr.fail(function(jqxhr, status){console.log('dxhr错误代码:'+status);})
+
+            })()
+
+            if(alipay) $('.pay-channel .app').eq(1).hide();
+            $('.backuser').on(clickOrTouch,function(){window.location.href="./pay-checkstand.html"})
+            $('.app').on(clickOrTouch, function (e) {
+                var e = e || window.event;
+                e.stopPropagation();
+                if ($(this).data('app') == 'zfb' && $('.zfb').hasClass('unchecked')) {
+                    $('.wx').removeClass('checked').addClass('unchecked');
+                    $('.zfb').removeClass('unchecked').addClass('checked');
+                    type = 'ALIPAY_H5';
+                } else if ($(this).data('app') == 'wx' && $('.wx').hasClass('unchecked')) {
+                    $('.zfb').removeClass('checked').addClass('unchecked');
+                    $('.wx').removeClass('unchecked').addClass('checked');
+                    type = 'WEIXIN_H5';
+                }
+            })
+            $('.pay').on(clickOrTouch, function (e) {
+                var e = e || window.event, qurl = '';
+                e.stopPropagation();
+
+                if(url.productid==998)
+                    qurl = '//'+prefix+'pay.yizhibo.com/inpour/api/create_inpour_order_v2_h5?productid='+url.productid+'&ptype='+type+'&money='+url.money;
+                else
+                    qurl = '//'+prefix+'pay.yizhibo.com/inpour/api/create_inpour_order_v2_h5?productid='+url.productid+'&ptype='+type;
+
+                var params = {
+                    url: qurl,
+                    type: 'get',
+                    async: false,  
+                    dataType: "jsonp",  
+                    jsonp: "callback",
+                    jsonpCallback: "return_callback"
+                }, xhr = $.ajax(params);
+
+                xhr.done(function (data) {
+                    if (data.result == 1) {
+                        document.write(data.data);
+                    } else {
+                        jAlert(data.msg, "");
+                    }
+                })
+                xhr.fail(function (data) {
+                    jAlert("操作失败，请稍后重试", "");
+                })
+            })
+        })
+
+        var url = (function(){
+            var get  = location.search.slice(1), url = {};
+            get = get.split('&');
+            get.forEach(function(v, i){
+                v = v.split('=');
+                if(v.length<2) return ;
+                url[v[0]] = v[1];
+            })
+            return url;
+        })()
+
+    })(window, jQuery)
+</script>
+</body>
+</html>
