@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JSZip测试</title>
+	<style type="text/css">
+		.box{position: absolute;top:0; left: 0;}
+	</style>
+</head>
+<body>
+	<h1>JSZip测试</h1>
+	<a id="link">下载</a>
+<!-- 
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2><h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+ -->
+	<div class="box">
+		<canvas id="canvas" with="800" height="1000">您的浏览器不支持</canvas>
+	</div>
+	<img id="img"></img>
+	
+	<script type="text/javascript" src="js/jszip.js"></script>
+	 <script type="text/javascript" src="js/jszip-utils.js"></script>
+
+      <!--
+      Mandatory in IE 6, 7, 8 and 9.
+      -->
+      <!--[if IE]>
+      <script type="text/javascript" src="js/jszip-utils-ie.js"></script>
+      <![endif]-->
+
+	<script type="text/javascript">
+		// var zip = new JSZip();
+		// var img = document.getElementById("img");
+		// var canvas = document.getElementById('canvas');
+		// // create a file
+		// // zip.file("hello.txt", "Hello[p my)6cxsw2q");
+		// // // oops, cat on keyboard. Fixing !
+		// // zip.file("hello.txt", "Hello World\n");
+
+		// // // create a file and a folder
+		// // zip.file("nested/hello.txt", "Hello World\n");
+
+		// // var photoZip = zip.folder("photos");
+		// // // this call will create photos/README
+		// // photoZip.file("README", "a folder with photos");
+
+		// // zip.file("hello.txt").async("string").then(function (data) {
+		// //   // data is "Hello World\n"
+		// //   console.log("sting:"+data);
+		// // });
+
+		// // zip.file("hello.txt").async("base64").then(function (data) {
+		// //   // data is "Hello World\n"
+		// //   console.log("base64:"+data);
+		// // });
+		// // zip.file("hello.txt").async("base64").then(function (data) {
+		// //   // data is "Hello World\n"
+		// //   console.log("base64:"+data);
+		// // });
+
+		// // if (JSZip.support.uint8array) {
+		// //   zip.file("hello.txt").async("uint8array").then(function (data) {
+		// //     // data is Uint8Array { 0=72, 1=101, 2=108, more...}
+		// //     console.log("uint8array:"+data);
+		// //   });
+		// // }
+
+
+		// // var promise1 = null,promise2 = null;
+		
+		// //   promise1 = zip.generateAsync({type : "uint8array"});
+	
+		// //   promise2 = zip.generateAsync({type : "string"});
+
+		// zip.file("smile.gif", "R0lGODdhBQAFAIACAAAAAP/eACwAAAAABQAFAAACCIwPkWerClIBADs=", {base64: true});
+		// zip.file("folder/file.txt", "file in folder");
+
+		// zip.file("animals.txt", "dog,platypus\n").file("people.txt", "james,sebastian\n");
+
+		// // result : Hello.txt, smile.gif, Xmas.txt, animals.txt, people.txt,
+		// // folder/, folder/file.txt
+		// // In the above case, the "folder" folder will not have a 'D'irectory attribute or Method property. The
+		// // folder only exists as part of the path to "file.txt".
+
+		// // zip.file("folder/file.txt", "file in folder", {createFolders: true});
+		// // In this case, the "folder" folder WILL have a 'D'irectory attribute and a Method property of "store".
+		// // It will exist whether or not "file.txt" is present.
+		// zip.generateAsync({type:"base64"})
+		// .then(function (content) {
+		//     location.href="data:application/zip;base64,"+content;
+		// });
+
+
+		//This example will Generate a Open Document Spreasheet, with the correct mime type
+var zip = new JSZip();
+zip.file("mimetype", "application/vnd.oasis.opendocument.spreadsheet");
+var conf2 = zip.folder("Configurations2");
+conf2.folder("acceleator");
+conf2.folder("images");
+conf2.folder("popupmenu");
+conf2.folder("statusbar");
+conf2.folder("floater");
+conf2.folder("menubar");
+conf2.folder("progressbar");
+conf2.folder("toolbar");
+
+var manifest = "<..."; //xml containing manifest.xml
+var styles = "<..."; //xml containing styles.xml
+var settings = "<..."; //xml containing settings.xml
+var meta = "<..."; //xml containing meta.xml
+var content = "<..."; //xml containing content.xml
+
+var metaInf = zip.folder("META-INF");
+metaInf.file("manifest.xml", manifest);
+zip.file("styles.xml", styles);
+zip.file("settings.xml", settings);
+zip.file("meta.xml", meta);
+zip.file("content.xml", content);
+
+//Generate the file
+zip.generateAsync({
+    type: "blob",
+    mimeType: "application/ods",
+    compression: "DEFLATE"
+}).then(function (odsFile) {
+    var url = window.URL.createObjectURL(odsFile);
+    var link = document.getElementById("link"); //I suppose you'll have a link with this id :)
+    link.download = "testjs.ods";
+    link.href = url;
+});
+
+
+		
+
+
+	</script>
+</body>
+</html>	

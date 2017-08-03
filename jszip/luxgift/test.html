@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>JSZip测试</title>
+	<style type="text/css">
+		/*.box{ position:absolute; padding: 0 50px; margin: 0 50px; top:0; left:0; background-color: rgba(0,0,0,0.5); }*/
+		#canvas{border:1px solid red;}
+		.img{width: 800px;height: 1000px;}
+	</style>
+</head>
+<body>
+	<h1>JSZip测试</h1>
+	<a id="link">下载</a>
+	<img id="img"></img>
+	<div><h2 id="time"></h2></div>
+<!-- 
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2><h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+	<h2>22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222</h2>
+ -->
+	<div class="box">
+		<canvas id="canvas" >您的浏览器不支持</canvas>
+	</div>
+	
+	
+	<script type="text/javascript" src="js/jszip.js"></script>
+	 <script type="text/javascript" src="js/jszip-utils.js"></script>
+
+      <!--
+      Mandatory in IE 6, 7, 8 and 9.
+      -->
+      <!--[if IE]>
+      <script type="text/javascript" src="js/jszip-utils-ie.js"></script>
+      <![endif]-->
+
+	<script type="text/javascript">
+		var zip = new JSZip();
+		var img = document.getElementById("img");
+		var canvas = document.getElementById('canvas');
+		var images = [];
+		var kk=0;
+		
+		
+
+		// canvas.width = image.width;
+		// canvas.height = image.height;
+		var ctx = canvas.getContext("2d");
+		// ctx.globalAlpha = 0.5;
+		
+
+		//1love:  http://alcdn.img.xiaoka.tv/20160823/8f4/827/0/8f48278ff84034b3008f5ca5ce6d7823.zip
+		//2兰博基尼：  http://alcdn.img.xiaoka.tv/20160530/a76/e1c/0/a76e1c17bdb28e3f4b3c4abfee348001.zip
+		//3豪华游艇：  http://alcdn.img.xiaoka.tv/20160707/00d/09d/0/00d09db1a1bda19b6fa8fa0fd7d385ed.zip
+		//4气球：  http://alcdn.img.xiaoka.tv/20160809/345/3d0/0/3453d02fcb25493d97fb201307d02334.zip
+		//5水晶鞋：  http://alcdn.img.xiaoka.tv/20160721/c5c/030/0/c5c030208689fb095d2f3e69457fd412.zip
+		//6钻戒：   http://alcdn.img.xiaoka.tv/20160721/b71/896/0/b71896bd370a6f6bee5ecd789d2f4618.zip
+		//7法拉利： http://alcdn.img.xiaoka.tv/20160721/475/e73/0/475e730a6af690be3cfc5e06048aec1f.zip
+		//8生日蛋糕：   http://alcdn.img.xiaoka.tv/20161128/817/d13/0/817d13957f55bba06ed23b71755aa988.zip
+		//9思念摩天轮： http://alcdn.img.xiaoka.tv/20160914/c83/c0d/0/c83c0dea76bed5716c9235d09d05b05f.zip
+		//10金牌主播：  http://alcdn.img.xiaoka.tv/20160731/f8e/ae5/0/f8eae5dc42416762c5c4f4737411c8df.zip
+		//11太空漫游： http://alcdn.img.xiaoka.tv/20160725/f2b/d12/0/f2bd12b111b4774d2a6f445145252e92.zip
+		//12一起摇摆：  http://alcdn.img.xiaoka.tv/20161115/1e5/cb3/0/1e5cb3aae627a5ac62916ce923a7fcc2.zip
+
+		JSZipUtils.getBinaryContent('zip.zip', function(err, data) {
+		    if(err) {
+		        throw err; // or handle err
+		    }
+
+		    zip.loadAsync(data)
+		    .then(function(zip){
+		    	var files = zip.file(/^[0-9][0-9].png$/);
+		    	var promiseList = [];
+		    	for(var i = 0,len = files.length;i<len;i++){
+		    		promiseList.push(files[i].async("base64").then(function(data){return data}));
+
+		    	}
+			   return JSZip.external.Promise.all(promiseList)
+			    .then(function(list){
+			    	for(var i=0 ; i < list.length; i++){
+			    		var img = new Image();
+		    			img.src = "data:image/png;base64," + list[i];
+		    			images[i] = img;
+		    			// document.body.appendChild(img);
+		    			// ctx.drawImage(img,0,0);
+			    	}
+			    });
+
+		    })
+		    .then(function(){
+		    	var timer = setInterval(function(){
+		    		canvas.width = images[kk].width;
+					canvas.height = images[kk].height;
+		    		ctx.clearRect(0,0,canvas.width,canvas.height);
+		    		ctx.drawImage(images[kk],0,0);
+		    		
+		    		if(++kk > images.length-1){
+		    			kk = 0;
+		    		}
+		    	},100)
+		    });
+		    // .then(function(list){
+		    // 	console.log(list);
+		    // });
+		    // .then(function(){
+		    // 	for(var i=0; i < images.length;i++)
+
+			   //  document.body.appendChild(images[i]);
+			    			
+		    // });
+			// images = zip.file(/^[0-9][0-9].png$/);
+
+		   
+
+		});
+
+		
+		// var canvas = document.getElementById('canvas');
+		
+		
+
+		// // canvas.width = image.width;
+		// // canvas.height = image.height;
+		// var ctx = canvas.getContext("2d");
+		
+		// ctx.drawImage(image, 0, 0);
+		// var getDat = ctx.getImageData(0,0,canvas.width,canvas.height);
+		// var d = getDat.data;
+		// for (var i=0; i<d.length; i+=4) {
+		// 	var r = d[i];
+		// 	var g = d[i+1];
+		// 	var b = d[i+2];
+		// 	// CIE luminance for the RGB
+		// 	// The human eye is bad at seeing red and blue, so we de-emphasize them.
+		// 	var v = 0.2126*r + 0.7152*g + 0.0722*b;
+		// 	d[i] = d[i+1] = d[i+2] = v
+		// }
+		// ctx.putImageData(getDat,0,0);
+
+
+		
+
+
+	</script>
+</body>
+</html>	

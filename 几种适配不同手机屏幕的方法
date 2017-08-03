@@ -20,3 +20,12 @@
 三、手机新浪的h5页面，花椒的h5直播间
     设置meta标签的viewport的宽度为width=device-width
     容器类型的宽度就写百分比，元素性质的就写具体像素，不需要的就用margin、padding代替，定位就写具体的像素
+
+四、先前的工作引导h5开发适配
+
+    这里除以7.5的话，750设计图上面就可以直接除以100进行写rem，都不会出现无限小数
+    (function() {
+        document.documentElement.style.fontSize = (document.documentElement.clientWidth > 750 ? 750 : document.documentElement.clientWidth) / 7.5 + "px";
+        if (!window.onresize)
+            window.onresize = arguments.callee;
+    })()

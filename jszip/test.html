@@ -1,0 +1,54 @@
+<html>
+    <head>
+        <title>canvas的函数练习</title>
+        <style>
+            canvas{
+                width: 500px;
+                height: 500px;
+                border: 1px solid #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="1000" height="1000">你的浏览器不支持canvas</canvas>
+    </body>
+    <script>
+        var canvas = document.getElementById('canvas'), 
+            ctx = canvas.getContext('2d');
+        if(!ctx) console.log('不支持canvas');
+        ctx.beginPath();
+        var grd=ctx.createLinearGradient(20,20,170,120);
+        grd.addColorStop(0,"green");
+        grd.addColorStop(1,"red");
+
+        ctx.fillStyle=grd;
+        ctx.fillRect(20,20,150,100);
+        ctx.closePath();
+
+    </script>
+</html>
+
+<!--
+
+// Promise 的简单的学习代码
+function getScore(score){
+    var promise = new Promise(function(resolve, reject){
+
+         if(score>90)
+             resolve({'dd':'成绩分布在90分以上，绝对没问题'});
+         else
+             reject(new Error('不及格'));
+
+    });
+    return promise;
+}
+
+getScore(91).then(function(data){
+    console.log(data.dd);
+
+},function(error){
+
+    console.error(error.message);
+})
+
+-->
