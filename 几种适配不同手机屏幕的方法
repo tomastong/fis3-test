@@ -29,3 +29,22 @@
         if (!window.onresize)
             window.onresize = arguments.callee;
     })()
+
+五、通过使用媒体查询来适配，基准是18.75，屏幕的宽除以18.75就是html标签font-size的值
+    @media screen and (min-width: 320px){
+        html{
+            font-size:17px;
+        }
+    }
+
+    @media screen and (min-width: 360px){
+        html{
+            font-size:19.2px;
+        }
+    }
+
+    @media screen and (min-width: 375px){
+        html{
+            font-size:20px;
+        }
+    }

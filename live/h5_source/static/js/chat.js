@@ -8,15 +8,19 @@
         submit: function() {
             var content = $('.cinput input').val();
             var ip = '', that = this;
-            if (content != '') {
+            if (content.trim() != '') {
+                $('.send-msg').data('click', 'disabled');
                 $.ajax({
                     url: shareConfig.url.send_live_comment,
                     type: 'post',
                     async: 'false',
-                    data: {'scid': shareConfig.sObj.scid,'is_carousel':!!shareConfig.sObj.carouselid,'createip': ip,'comment': content},
+                    data: {'scid': shareConfig.room.scid,'is_carousel':!!shareConfig.room.carouselid,'createip': ip,'comment': content},
                     dataType: 'json',
                     success: function(data) {succfunc(data);},
-                    error: function(data) {$('.cinput input').val('');}
+                    error: function(data) {
+                        $('.cinput input').val('');
+                        $('.send-msg').removeData('click');
+                    }
                 })
             }
             function succfunc(data){
@@ -29,6 +33,7 @@
                         'nickname':user.nickname
                     }
                     that.view.comment(JSON.stringify(comment));
+                    $('.send-msg').removeData('click');
                     $('.comment.modal').addClass('hide');
                     $('#video-box .cinput input').val('').blur();
                 } else {
@@ -38,13 +43,14 @@
             }
         },
         init: function() {
-            var domain = location.hostname, socketurl='';
-            var child = domain.substr(0,domain.indexOf('.'));
-            if(child == 'dev'){
-                socketurl = 'ws://10.10.20.54:80';
-            }else{
-                socketurl = 'ws://ws.yizhibo.com'
-            }
+            var domain = location.hostname, socketurl='',
+                child = domain.substr(0,domain.indexOf('.')),
+                p = location.protocol == 'https:'?'wss:':'ws:';
+            if(child == 'dev')
+                socketurl = p + '//10.10.20.54:80';
+            else
+                socketurl = p + '//ws.yizhibo.com';
+            // socketurl = 'ws://101.201.101.190';
             //连接websocket后端服务器 ws://10.10.20.54:80
             this.socket = io.connect(socketurl, {
                 reconnectionAttemptes: 10,
@@ -57,7 +63,7 @@
             var that = this;
             //监听新用户登录
             this.socket.on('connect', function(data) {
-                that.socket.emit('joinRoom', shareConfig.sObj.carouselid || shareConfig.sObj.scid);
+                that.socket.emit('joinRoom', shareConfig.room.carouselid || shareConfig.room.scid);
                 // console.log('connect success.');
             });
             //监听消息发送

@@ -17,17 +17,24 @@
     <script src="../static/libjs/flexible.0.3.4.js"></script>
     <script src="../static/libjs/socket.io.js"></script>
     <script src="../static/libjs/mui.min.js"></script>
+    <script src="../static/libjs/fastclick.js"></script>
     <script src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <style>
+        @font-face {
+            font-family: YZB-NUMBER-Regular;
+            src: url(../static/font/YZB-NUMBER-Regular.otf)
+        }
+    </style>
 </head>
-<body style="margin:0 auto;">
+<body style="margin:0 auto;" class="hide">
     <div class="shadow">
         <img src="./../static/img/h5_room/shadow.png" class="shadow" style="position:absolute;width:100%;display:none;margin:0 auto;z-index: 999;">
     </div>
     <div id="rt-share">
-        <figure><img src="https://alcdn.img.xiaoka.tv/20170318/663/cba/31145325/663cba220a2f418fc1ac1ad09b975b41.jpg" alt=""></figure>
+        <figure><img src="<{$liveinfo.avatar}>" alt=""></figure>
         <dl>
             <dt>点击右上角... 进行分享</dt>
-            <dd><span>大城市宝宝...</span>感谢你哦</dd>
+            <dd><span><{$liveinfo.nickname}></span>感谢你哦</dd>
         </dl>
     </div>
         <{if $liveinfo.status==1}>
@@ -101,11 +108,11 @@
                             <a href="javascript:void(0);"><img src="<{$value.avatar}>" alt="">
                                 <{if $k < 3}>
                                 <div class="list">
-                                    <img src="//test.static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
+                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/f<{$k+1}>.png">
                                 </div>
                                 <{else}>
                                 <div class="list">
-                                    <img src="//test.static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
+                                    <img src="//static.yizhibo.com/html/live_h5/static/img/rank/<{$value.level_pic}>.png">
                                 </div>
                                 <{/if}>
                             </a>
@@ -295,18 +302,15 @@
         <ul class="more-list-box clearfix">
             <{foreach item=rs from=$list}>
                  <li>
-                    <a href="<{factory::load_config('domain','wap_yizhibo_domain')}>/l/<{$rs.scid}>.html">
+                    <a href="/l/<{$rs.scid}>.html">
                         <div class="item">
                             <figure>
                                 <img src="<{$rs.covers.s}>" alt="">
-                                <div class="status">
-                                <div class="placeholder"></div>
-                                    <{if $rs.status==10}>
-                                    <span class="icon"></span>直播中
-                                    <{else}>
-                                    <span></span>回放
-                                    <{/if}>
-                                </div>
+                                <{if $rs.status==10}>
+                                <div class="status slive"></div>
+                                <{else}>
+                                <div class="status sreplay"></div>
+                                <{/if}>
                                 <div class="loc">
                                     <{if $rs.address!=''}>
                                     <span class="loc-icon"></span><{$rs.address}>
@@ -314,15 +318,18 @@
                                     <span></span>
                                     <{/if}>
                                 </div>
+                                <{if $rs.address != ''}>
+                                    <div class="imgmask"></div>
+                                <{/if}>
                             </figure>
                             <div class="intro">
                                 <p class="name">
                                 <{$rs.nickname}>
-                                    <{if $rs.ytypevt==1}>   
-                                            <span class="rank doyen"></span>
-                                    <{else}>
-                                    <{/if}>
                                 </p>
+                                <{if $rs.ytypevt==1}>   
+                                        <span class="rank doyen"></span>
+                                <{else}>
+                                <{/if}>
                                 <p class="count">
                                 <{if $rs.status==11}>
                                     <{if $rs.views>9999}>
@@ -333,7 +340,7 @@
                                 <{else}>
                                     <{if $rs.type==0 && $rs.status==10}>
                                         <{if $rs.online>9999}>
-                                            <{number_format($rs.online/10000,1)}>万人
+                                            <{number_format($rs.online/10000,1)}>w人
                                         <{else}>
                                             <{$rs.online}>人
                                         <{/if}>
@@ -354,13 +361,13 @@
         <!-- add function -->
         <div class="footer doc-footer-wrapper">
             <ul class="scroll-image-wrapper">
-                <li class="active"><img src="../static/img/h5_room/yizhibolb.png" alt=""></li>
+                <li class="active"><img src="../static/img/h5_room/yizhibolb.jpg" alt=""></li>
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
                 <li><img src="" alt=""></li>
             </ul>
             <ul class="scroll-title-wrapper">
-                <li class="current"><a href="">更多精彩就在一直播~</a></li>
+                <li class="current"><a href=""><img src="../static/img/h5_room/yzblb.png" alt=""></a></li>
                 <li class="title"><a href=""></a></li>
                 <li class="title"><a href=""></a></li>
                 <li class="title"><a href=""></a></li>
@@ -397,14 +404,14 @@
         </div>
 <script>
 <{$SignPackage}>
-    var shareConfig = {
+    window.shareConfig = {
         wx:{
             title : '<{$seotitle}>',
             desc : '<{$seodescription}>',
             imgUrl : '<{$liveinfo.covers.s}>',
             link : "<{factory::load_config('domain','wap_yizhibo_domain')}>/l/<{$liveinfo.scid}>.html"
         },
-        sObj:{
+        room:{
             "scid":"<{$liveinfo.scid}>",
             "status":"<{$liveinfo.status}>",
             "memberid":"<{$liveinfo.memberid}>",

@@ -2,7 +2,7 @@ fis.config.set('modules.spriter', 'csssprites');
 
 
 fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**','src/**','bak/**','fe_api/**','.git/**','App_Data/**','.vs/**','**.sh','**.less','**.rar','fis-conf.js','.svn/**','*bak*']);
-  fis.media('test')    // 测试、压缩
+  fis.media('test')   // 测试
   .match('*', {
       deploy: fis.plugin('local-deliver', {
         to:'./../../live_h5'
@@ -105,11 +105,11 @@ fis.set('project.ignore', ['.cache/**','output/**','source/**','node_modules/**'
   })
   .match("static/img/rank/{*-*,f*}.png",{
       useHash:false
+  })
+  .match('html/**/(**).html', {
+      rExt: '.tpl',
+      release: './../../tpl_yizhibo_com/default/www/live/$1.tpl'
   });
-  // .match('html/**/(**).html', {
-  //     rExt: '.tpl',
-  //     release: './../../tpl_yizhibo_com/default/www/live/$1.tpl'
-  // });
 
 
   fis.media('prod')   // 正式

@@ -16,16 +16,23 @@
     <script src="../static/libjs/jquery-2.1.1.min.js"></script>
     <script src="../static/libjs/template.js"></script>
     <script src="../static/libjs/flexible.0.3.4.js"></script>
+    <script src="../static/libjs/fastclick.js"></script>
+    <style>
+        @font-face {
+            font-family: YZB-NUMBER-Regular;
+            src: url(../static/font/YZB-NUMBER-Regular.otf)
+        }
+    </style>
 </head>
 
 <body>
     <section class="hotlist">
         <div class="hotlist-index">
             <figure class="index-bg">
-                <img src="../static/img/h5_room/index-bg.png">
+                <img src="../static/img/h5_room/index-bg.jpg">
             </figure>
             <figure class="index-bg" style="display: none">
-                <img src="../static/img/h5_room/index-bg-2.png">
+                <img src="../static/img/h5_room/index-bg-2.jpg">
             </figure>
             <figure class="logo">
                 <img src="../static/img/h5_room/yzb-logo.png">
@@ -62,17 +69,18 @@
                 <div class="item">
                     <figure>
                         <img src="{{value.cover}}" alt="">
-                        <div class="status">
-                            <span class="{{value.status == 10 ? 'icon' : ''}}"></span>
-                            {{value.status == 10 ? '直播中' : '回放'}}
+                        <div class="status {{value.status == 10 ? 'slive' : 'sreplay'}}">
                         </div>
                         <div class="loc">
                             <span class="{{value.address != '' ? 'loc-icon':''}}"></span>{{value.address}}
                         </div>
+                        {{if value.address != ''}}
+                            <div class="imgmask"></div>
+                        {{/if}}
                     </figure>
                     <div class="intro">
                         <p class="name">{{value.nickname.length>5?value.nickname.substr(0,5)+'...':value.nickname}}<span class="rank {{value.ytypevt == 1 ? 'doyen':''}}"></span></p>
-                        <p class="count">{{value.status == 10 ? (value.online > 10000 ? (value.online/10000).toFixed(1)+'万人' : value.online+'人'):(value.views > 10000 ? (value.views/10000).toFixed(1)+'万人' : value.views+'人')}}</p>
+                        <p class="count">{{value.status == 10 ? (value.online > 10000 ? (value.online/10000).toFixed(1)+'w人' : value.online+'人'):(value.views > 10000 ? (value.views/10000).toFixed(1)+'w人' : value.views+'人')}}</p>
                         <p class="sign">{{value.title}}</p>
                     </div>
                 </div>
@@ -83,11 +91,15 @@
     <script>
 
         (function(win, $){
-            var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+            
+
+            // var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+            var clickOrTouch =  'click';
             var sUserAgent = navigator.userAgent.toLowerCase();
-            var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger";
-            var qq = navigator.userAgent.match(/QQ\//i) == "QQ/";
-            var weibo = sUserAgent.match(/WeiBo/i) == "weibo";
+            var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger",
+                qq = navigator.userAgent.match(/QQ\//i) == "QQ/",
+                weibo = sUserAgent.match(/WeiBo/i) == "weibo",
+                safari = sUserAgent.match(/Safari/i) == "safari";
 
             var opt = {
                 requestData:function(){
@@ -119,11 +131,11 @@
                     })
                 },
                 init:function(){
-                    if(qq || weixin || weibo){
+                    if(qq || weixin || weibo || safari){
                         $(".hotlist-index .index-bg").eq(0).hide();
                         $(".hotlist-index .index-bg").eq(1).show();
-                        $(".hotlist-index .logo").css("top","1.47rem");
-                        $(".hotlist-index .download").css("top","13.373rem");
+                        // $(".hotlist-index .logo").css("top","1.47rem");
+                        // $(".hotlist-index .download").css("top","11.373rem");
                     }
                     opt.recharge();
                     opt.requestData();
@@ -131,13 +143,15 @@
             }
 
             $(function(){
+                FastClick.attach(document.body);
+                
                 new Mlink({
                     mlink : "https://a.yzbo.tv/AAah",
                     button : document.querySelectorAll(".btnOpenApp")
                 });
 
                 opt.init();
-
+                
                 $(window).scroll(function () {
                     if ($(document).scrollTop()+$(window).height()
                            >=$(document).height()-200) {

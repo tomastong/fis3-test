@@ -8,7 +8,7 @@
             var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
             $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
             $.ajax({  
-                url:'//'+prefix+'pay.yizhibo.com'+shareConfig.url.get_gift_list_background+'?scid='+shareConfig.sObj.scid+'&memberid='+user.memberid,  
+                url:'//'+prefix+'pay.yizhibo.com'+shareConfig.url.get_gift_list_background+'?scid='+shareConfig.room.scid+'&memberid='+user.memberid,  
                 type: "get",  
                 async: false,  
                 dataType: "jsonp",  

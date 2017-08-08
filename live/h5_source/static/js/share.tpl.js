@@ -11,6 +11,7 @@
                 if(!isEmptyObject(user)){
                     $('#video-box .modal').removeClass('hide');
                     $('#video-box .modal input').focus();
+                    $('html, body').scrollTop(0);
                 }
                 else{
                     var domain = location.host, prefix = domain.substr(0, domain.indexOf('.')+1);
@@ -20,7 +21,7 @@
                 }
 
             }).on(clickOrTouch, '.send-msg', function(e) {
-
+                if($('.send-msg').data('click') == 'disabled') return;
                 chat.submit();
             });
             
@@ -168,10 +169,10 @@
                 $.ajax({
                     url: shareConfig.url.buy_gift_h5,
                     type: 'post',
-                    data: { scid: shareConfig.sObj.scid || shareConfig.sObj.carouselid, 
+                    data: { scid: shareConfig.room.scid || shareConfig.room.carouselid, 
                             giftid: $('.active').data('giftid'), 
                             amount: cnt,
-                            carouselid:shareConfig.sObj.carouselid ||'' 
+                            carouselid:shareConfig.room.carouselid ||'' 
                     }
                 }).done(function(data) {
                     if(data.result == 1){
@@ -326,10 +327,10 @@
                 var buyxhr = $.ajax({
                     url: shareConfig.url.buy_gift_h5,
                     type: 'post',
-                    data: { scid: shareConfig.sObj.scid || shareConfig.sObj.carouselid, 
+                    data: { scid: shareConfig.room.scid || shareConfig.room.carouselid, 
                             giftid: $('.sgift img').data('giftid'), 
                             amount: 1,
-                            carouselid:shareConfig.sObj.carouselid ||'' 
+                            carouselid:shareConfig.room.carouselid ||'' 
                     }
                 })
                 buyxhr.done(function(data){
@@ -443,9 +444,13 @@
                 $('.player-lock, .leadReece').css('display', 'block');
 
                 $(document).on(clickOrTouch, '.player-lock', function(e) {
+                    var e = e || window.event;
+                    e.stopPropagation();
                     $('.player-lock, .leadReece').hide();
 
                 }).on(clickOrTouch, '.leadReece .close', function(e) {
+                    var e = e || window.event;
+                    e.stopPropagation();
                     $('.player-lock, .leadReece').hide();
                 });
             }
@@ -486,7 +491,7 @@
                     $('.shadow').css({ 'display': 'block' });
                 }
                 else 
-                    win.location.href = 'xktv://jump?type=5&dataStr=' + shareConfig.sObj.scid;
+                    win.location.href = 'xktv://jump?type=5&dataStr=' + shareConfig.room.scid;
                 
             });
         })(),
@@ -556,15 +561,15 @@
             new Mlink({
                 mlink : 'https://a.yzbo.tv/AAah',
                 button : document.querySelectorAll('a#btnOpenApp'),
-                tparams : {'u_id':shareConfig.sObj.unq_member_key},
+                tparams : {'u_id':shareConfig.room.unq_member_key},
                 autoRedirect : false,
                 autoRedirectToDownloadUrl: true,
                 downloadWhenUniversalLinkFailed: false
             });
             new Mlink({
-                mlink : 'https://a.yzbo.tv/AAAj?type=1&dataStr='+shareConfig.sObj.scid,
+                mlink : 'https://a.yzbo.tv/AAAj?type=1&dataStr='+shareConfig.room.scid,
                 button : document.querySelectorAll('a#enter_room'),
-                tparams : {'u_id' : shareConfig.sObj.unq_member_key},
+                tparams : {'u_id' : shareConfig.room.unq_member_key},
                 autoRedirect : false,
                 autoRedirectToDownloadUrl: true,
                 downloadWhenUniversalLinkFailed: false
@@ -595,29 +600,33 @@
                     nickname.length>10?nickname = nickname.substr(0.10)+'...':'';
                     $('.scroll-image-wrapper li img').eq(v).attr('src', data.data.list[i].avatar);
                     $('.scroll-title-wrapper li a').eq(v).html('我在一直播，快来跟我互动吧！'+'<br>'+nickname);
-                })
+                });
+
+                lunbo();
             });
             xhr.fail(function(){
                 console.log('热门列表数据轮播加载失败...');
             })
 
 
-            var twidth = parseInt($('.scroll-title-wrapper li.current').width())+1;
-            $('.doc-footer-wrapper .scroll-title-wrapper li:gt(0)').css({'left':twidth});
-            $('.scroll-title-wrapper li.current').css({'left':0});
-            var timer = setInterval(function(){
-                var index = $('.scroll-image-wrapper li.active').index(), current = $('.scroll-title-wrapper li.current').index();
+            function lunbo(){
+                var twidth = parseInt($('.scroll-title-wrapper').width())+1;
+                $('.doc-footer-wrapper .scroll-title-wrapper li:gt(0)').css({'left':twidth});
+                $('.scroll-title-wrapper li.current').css({'left':0});
+                var timer = setInterval(function(){
+                    var index = $('.scroll-image-wrapper li.active').index(), current = $('.scroll-title-wrapper li.current').index();
 
-                $('.scroll-image-wrapper li.active, .scroll-panel li.active').removeClass('active');
-                $('.scroll-image-wrapper li').eq((index+1)%4).addClass('active');
-                $('.scroll-panel li').eq((index+1)%4).addClass('active');
+                    $('.scroll-image-wrapper li.active, .scroll-panel li.active').removeClass('active');
+                    $('.scroll-image-wrapper li').eq((index+1)%4).addClass('active');
+                    $('.scroll-panel li').eq((index+1)%4).addClass('active');
 
-                $('.scroll-title-wrapper li.current').removeClass('current').css({'left':-twidth});
-                $('.scroll-title-wrapper li').eq((current+1)%4).addClass('current').css({'left':0});
-                $('.scroll-title-wrapper li').eq((current+2)%4).removeClass('hide').css({'left':twidth});
-                $('.scroll-title-wrapper li').eq((current+3)%4).addClass('hide').css({'left':twidth});
+                    $('.scroll-title-wrapper li.current').removeClass('current').css({'left':-twidth});
+                    $('.scroll-title-wrapper li').eq((current+1)%4).addClass('current').css({'left':0});
+                    $('.scroll-title-wrapper li').eq((current+2)%4).removeClass('hide').css({'left':twidth});
+                    $('.scroll-title-wrapper li').eq((current+3)%4).addClass('hide').css({'left':twidth});
 
-            }, 3000);
+                }, 3000);
+            }
         })(),
         panelGift:(function(){
             // url: shareConfig.url.get_user_panel_gift_background,
@@ -625,7 +634,7 @@
             $.inArray(prefix,['test.', 'dev.'])== -1 ? prefix='' : '';
             var xhr = $.ajax({
                 url: '//'+prefix+'pay.yizhibo.com/gift/api/get_user_panel_gift_background',
-                data: { anchorid:shareConfig.sObj.memberid },
+                data: { anchorid:shareConfig.room.memberid },
                 type: "get",  
                 async: false,  
                 dataType: "jsonp",  
@@ -641,16 +650,18 @@
             })  
         })(),
         init: function() {
-            shareConfig.sObj.status == 1?
-            $('#video-box').remove():$('video')[0].controls = false;
+            if(!!$('video').length && shareConfig.room.status == 1)
+                $('#video-box').remove();
+            else if(!!$('video').length && shareConfig.room.status != 1)
+                $('video')[0].controls = false;
             
-            if($('video').length && shareConfig.sObj.vscreen==2){
+            if($('video').length && shareConfig.room.vscreen==2){
                 $('.user-info,.user_live_room,.gold-coin,.yizhibo-logo')
                     .css({'background-color':'#1F1F1F'});
                 $('.w-input').addClass('input-border');
             }
-            if(shareConfig.sObj.showtype==3) $('.pay-live').show();
-            if(ios && (qq || weixin) && $('video').length != 0){
+            if(shareConfig.room.showtype==3) $('.pay-live').show();
+            if(ios && (qq || weixin) && $('video').length != 0 && shareConfig.room.carouselid==''){
                 $('.videobg, .pause').hide();
                 $('#video').get(0).play();
                 document.addEventListener('WeixinJSBridgeReady', function () { 

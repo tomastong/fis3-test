@@ -4,7 +4,8 @@ var ios = /iphone|ipad|ipod/.test(sUserAgent),
 var weixin = sUserAgent.match(/MicroMessenger/i) == "micromessenger",
     qq = navigator.userAgent.match(/QQ\//i) == "QQ/",
     weibo = sUserAgent.match(/WeiBo/i) == "weibo";
-var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+// var clickOrTouch = (('ontouchend' in window)) ? 'touchend' : 'click';
+var clickOrTouch = 'click';
 var appCtl = false;
 
 // 新浪新闻订制

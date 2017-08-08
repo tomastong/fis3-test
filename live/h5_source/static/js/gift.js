@@ -4,8 +4,8 @@ var render = function() {
         boomtime = 300; // 进场礼物队列
 
     var current_anchor = {  // 定义当前主播
-        'scid' : shareConfig.sObj.scid,
-        'memberid' : shareConfig.sObj.memberid
+        'scid' : shareConfig.room.scid,
+        'memberid' : shareConfig.room.memberid
     };    
 
     function pushGift(data) {
@@ -71,7 +71,7 @@ var render = function() {
                     console.log('没有找到礼物');
                     return;
                 }
-                $("#J_luxury").removeClass('hide').html('');
+                $("#J_luxury").removeClass('hide').show().html('');
                 if(canvasgift.support)  // true（支持）false(不支持)
                 {
                     var canvas = $("#J_luxury canvas")[0];
@@ -227,32 +227,38 @@ var render = function() {
         }
         if(obj && obj.type == 3 && current_anchor.scid == obj.next_scid)  return;
 
-        $.getJSON('http://test.m.yizhibo.com/www/mobile/get_play_live?scid=xhM5agNgmtNC_0kZ',function(d){     
-            $('.lunmaigd').removeClass('hide');
-            current_anchor.playurl = d.linkurl;
-            $('#video-box video').attr('src', current_anchor.playurl);
-        })
+        $('.lunmaigd').removeClass('hide');
+        window.location.href = '//'+window.location.host + window.location.pathname +'?'+new Date().getTime();
 
-        $('#video-box video')[0].addEventListener('loadstart canplay canplaythrough', function(){
-            $('#video-box video')[0].play();
-            update_anchor(obj);
-            $('.lunmaigd').addClass('hide');
-        });
+        // $.getJSON('http://test.m.yizhibo.com/www/mobile/get_play_live?scid='+obj.next_scid,function(d){     
+        //     $('.lunmaigd').removeClass('hide');
+        //     setTimeout(function(){
+        //         window.location.reload();
+        //     }, 1000);
+        //     current_anchor.playurl = d.linkurl;
+        //     $('#video-box video').attr('src', current_anchor.playurl);
+        // })
 
-        function update_anchor(data){   // 更新轮麦主播信息
-            current_anchor.scid = obj.next_scid;
-            current_anchor.memberid = obj.next_member_id;
-            current_anchor.nickname = obj.nickname;
-            current_anchor.avatar = obj.avatar;
-            current_anchor.queuing_room_scid = obj.queuing_room_scid;    
+        // $('#video-box video')[0].addEventListener('loadstart canplay canplaythrough', function(){
+        //     $('#video-box video')[0].play();
+        //     update_anchor(obj);
+        //     $('.lunmaigd').addClass('hide');
+        // });
 
-            //更新shareConfig对象
-            shareConfig.sObj.scid = current_anchor.scid;
-            shareConfig.sObj.memberid = current_anchor.memberid;
+        // function update_anchor(data){   // 更新轮麦主播信息
+        //     current_anchor.scid = obj.next_scid;
+        //     current_anchor.memberid = obj.next_member_id;
+        //     current_anchor.nickname = obj.nickname;
+        //     current_anchor.avatar = obj.avatar;
+        //     current_anchor.queuing_room_scid = obj.queuing_room_scid;    
 
-            $('.user-info .avatar img, .user_avatar img').attr('src', current_anchor.avatar);
-            $('.user-info .item dt, .user_desc dt').text(current_anchor.nickname);
-        }
+        //     //更新shareConfig对象
+        //     shareConfig.room.scid = current_anchor.scid;
+        //     shareConfig.room.memberid = current_anchor.memberid;
+
+        //     $('.user-info .avatar img, .user_avatar img').attr('src', current_anchor.avatar);
+        //     $('.user-info .item dt, .user_desc dt').text(current_anchor.nickname);
+        // }
     }
 
     function autoscroll(){
