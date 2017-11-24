@@ -2,7 +2,8 @@
 
 一、映客的直播间H5页面
     function setRemFontSize(baseSize,baseWidth){
-        var baseSize = baseSize||20,baseWidth = baseWidth||375,
+    // 这里的baseSize没什么特别的，以自己开发方便进行设置，如果设计图是375的话，width总共是3.75rem，这样的话通过ps量的像素，直接除以100加上单位rem换算就行了，rem只是个换算个单位，还是看怎么方便自己才行
+        var baseSize = baseSize||100,baseWidth = baseWidth||375,
             clientWidth = document.documentElement.clientWidth<=480?document.documentElement.clientWidth: 480 ;
         document.getElementsByTagName('html')[0].style.fontSize = clientWidth*baseSize/baseWidth+'px'
     }
