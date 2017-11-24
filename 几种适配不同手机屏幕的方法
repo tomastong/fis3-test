@@ -21,7 +21,7 @@
     设置meta标签的viewport的宽度为width=device-width
     容器类型的宽度就写百分比，元素性质的就写具体像素，不需要的就用margin、padding代替，定位就写具体的像素
 
-四、先前的工作引导h5开发适配
+四、先前的工作引导h5开发适配（和第五种方法异曲同工之秒，适配了所有手机屏幕宽度，这里的7.5换成18.75就完全一样了）
 
     这里除以7.5的话，750设计图上面就可以直接除以100进行写rem，都不会出现无限小数
     (function() {
@@ -30,21 +30,59 @@
             window.onresize = arguments.callee;
     })()
 
-五、通过使用媒体查询来适配，基准是18.75，屏幕的宽除以18.75就是html标签font-size的值
+五、通过使用媒体查询来适配，基准是18.75，屏幕的宽除以18.75就是html标签font-size的值（这里只是一部分）
+    ps:  这里必须是所有的手机设备，否则一定会出现兼容问题
+    375/20 = 320/x    x = 17px
     @media screen and (min-width: 320px){
         html{
             font-size:17px;
         }
     }
 
+    372/20 = 360/x     x = 19.2px
     @media screen and (min-width: 360px){
         html{
             font-size:19.2px;
         }
     }
-
+    // 这里的值是基于375设计稿设置的，默认1rem是20px，宽度为rem
     @media screen and (min-width: 375px){
         html{
             font-size:20px;
         }
     }
+    375/20 = 414/x     x = 22.08px
+    @media screen and (min-width: 414px){
+        html{
+            font-size:22.08px;
+        }
+    }    
+
+
+
+
+// 这里限制了html的宽度，小于320、大于640的不显示
+html {
+  font-size: 40px;          // 除了以下几种设备情况，默认显示40px, 比360小的320等都是这个
+  min-width: 320px;         // 页面最小显示区域    并不隐藏
+  max-width: 640px;         // 页面最大显示区域    并不隐藏
+  margin: 0 auto;
+}
+
+// 这里其实还需要添加320宽度信息的，但是和更小的一样，就省去了
+@media screen and (min-width: 360px) {  html{font-size: 40px}  }
+
+
+@media screen and (min-width: 360px) 
+
+@media screen and (min-width: 375px) 
+
+@media screen and (min-width: 414px) 
+
+@media screen and (min-width: 480px) 
+
+@media screen and (min-width: 530px) 
+
+@media screen and (min-width: 568px) 
+
+@media screen and (min-width: 640px) 
